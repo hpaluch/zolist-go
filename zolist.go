@@ -1,14 +1,14 @@
 package zolist
 
 import (
-    "html/template"
-    "net/http"
-    "time"
+	"html/template"
+	"net/http"
+	"time"
 )
 
 type HomeModel struct {
 	Now    time.Time
-        Header http.Header
+	Header http.Header
 }
 
 var homeTemplate = template.Must(template.New("home").Parse(`
@@ -27,23 +27,18 @@ var homeTemplate = template.Must(template.New("home").Parse(`
 <img src='/static/appengine-silver-120x30.gif' alt='GAE' >
 `))
 
-
-
 func init() {
-    http.HandleFunc("/", handler)
+	http.HandleFunc("/", handler)
 }
-
-
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
-    homeModel := HomeModel{
-       Now:    time.Now(),
-       Header: r.Header,
-    }
+	homeModel := HomeModel{
+		Now:    time.Now(),
+		Header: r.Header,
+	}
 
-    if err := homeTemplate.Execute(w, homeModel); err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
+	if err := homeTemplate.Execute(w, homeModel); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
-
