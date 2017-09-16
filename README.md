@@ -68,7 +68,7 @@ Create new application in GAE Dashboard:
 ./run_dev.sh
 ```
 * and go to URL: http://localhost:8080/
-* to view cute Admin interface (something like "Dashboard Lite"
+* to view cute Admin interface (something like "Dashboard Lite")
   use: http://localhost:8000
 
 ## Deploying app
