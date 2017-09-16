@@ -15,13 +15,13 @@ Install required components:
 
 * Install python 2.7 (or later 2.x) using:
 
-```bash
-sudo apt-get install python2.7
-```
+  ```bash
+  sudo apt-get install python2.7
+  ```
 
-* Download current Google Cloud SDK (formerly GAE SDK) from: \\
-  https://cloud.google.com/appengine/docs/standard/go/download \\
-  in my case \\
+* Download current Google Cloud SDK (formerly GAE SDK) from:
+  https://cloud.google.com/appengine/docs/standard/go/download
+  in my case
   https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-171.0.0-linux-x86_64.tar.gz 
 
 * Unpack your archive somewhere for example under `/opt`
@@ -53,7 +53,7 @@ gcloud components install app-engine-go
 
 Create new application in GAE Dashboard:
 
-* Go to your GAE Dashboard using this link: \\
+* Go to your GAE Dashboard using this link:
   https://console.cloud.google.com/projectselector/appengine/create?lang=go
 * Click on `Create` button
 * Fill in unique _Project name_ (in my case `hp-zolist` 
@@ -65,7 +65,7 @@ Back in your app:
 
 * open `app.yaml` and replace `hp-zolist` with your APP ID:
 
-```
+```yml
 application: PUT_YOUR_APP_ID_HERE
 ```
 
@@ -75,8 +75,9 @@ application: PUT_YOUR_APP_ID_HERE
 ```bash
 ./dev_run.sh
 ```
-* and go to URL: ...
-
+* and go to URL: http://localhost:8080/
+* to view cute Admin interface (something like "Dashboard Lite"
+  use: http://localhost:8000
 
 
 # Resources
