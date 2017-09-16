@@ -7,6 +7,9 @@ import (
 	"os"
 	"time"
 
+	"io/ioutil"
+	"encoding/json"
+
 	"appengine"
 	"appengine/urlfetch"
 )
@@ -38,6 +41,12 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
+type ZoApiRestaurant struct {  
+    Id string `json:"id"` // Ooops, they have "id":"123" in quotes (should be int)!
+    Name string `json:"name"`
+    Url  string `json:"url"`
+}
+
 // restId = Restaurant ID
 func fetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (string, error) {
 	var client = urlfetch.Client(ctx)
@@ -53,7 +62,20 @@ func fetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (s
 	if err != nil {
 		return "", err
 	}
-	var str = fmt.Sprintf("HTTP GET returned status %v", resp.Status)
+
+	// https://blog.alexellis.io/golang-json-api-client/
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var zoApiRest = ZoApiRestaurant{}
+	err = json.Unmarshal(body, &zoApiRest)
+	if err != nil {
+		return "", err
+	}
+
+	var str = fmt.Sprintf("HTTP GET returned statsu=%v data=%v", resp.Status,zoApiRest)
 	return str, nil
 }
 
@@ -70,6 +92,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	restStr, err := fetchZomatoRestaurant(ctx, api_key, restId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	homeModel := HomeModel{

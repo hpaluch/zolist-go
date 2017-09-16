@@ -135,5 +135,8 @@ And finally:
   https://golang.org/ref/spec#Short_variable_declarations
 * How to pass environment in GAE/Go:
   https://cloud.google.com/appengine/docs/standard/go/config/appref
+* How to call JSON API:
+  https://blog.alexellis.io/golang-json-api-client/
 * Offtopic: Dynamic eval of variables in bash:
   http://www.tldp.org/LDP/abs/html/ivr.html
+
