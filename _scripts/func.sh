@@ -14,3 +14,18 @@ check_zomato_key () {
 
 }
 
+gen_app_yaml () {
+	check_zomato_key
+	{
+		echo "# DO NOT EDIT - Generated at `date`"
+		cat app.yaml.template
+		echo "env_variables:"
+		for i in ZOMATO_API_KEY
+		do
+			eval val="\$$i"
+			echo "    $i: '$val'"
+		done
+	} > app.yaml
+
+}
+

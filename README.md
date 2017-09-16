@@ -131,4 +131,9 @@ And finally:
 
 * Official Go on GAE getting started:
   https://cloud.google.com/appengine/docs/standard/go/quickstart
-
+* Understand variable declaration in Go:
+  https://golang.org/ref/spec#Short_variable_declarations
+* How to pass environment in GAE/Go:
+  https://cloud.google.com/appengine/docs/standard/go/config/appref
+* Offtopic: Dynamic eval of variables in bash:
+  http://www.tldp.org/LDP/abs/html/ivr.html

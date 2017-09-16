@@ -2,9 +2,9 @@
 
 # reformats my source
 gofmt=/opt/gae/google-cloud-sdk/platform/google_appengine/goroot-1.8/bin/gofmt
-set -x
+cd `dirname $0`
+cd ..
 $gofmt -d *.go 
-set +x
 echo -n "Reformat source [y/N]?"
 read ans
 case "$ans" in

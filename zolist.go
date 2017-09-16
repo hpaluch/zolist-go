@@ -3,6 +3,7 @@ package zolist
 import (
 	"html/template"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -32,6 +33,11 @@ func init() {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	var api_key = os.Getenv("ZOMATO_API_KEY")
+	if api_key == "" {
+		http.Error(w, "Internal error - missing ZOMATO_API_KEY",
+			http.StatusInternalServerError)
+	}
 
 	homeModel := HomeModel{
 		Now:    time.Now(),

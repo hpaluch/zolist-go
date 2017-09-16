@@ -2,7 +2,7 @@
 
 cd `dirname $0`
 source _scripts/func.sh
-check_zomato_key
+gen_app_yaml
 set -ex
 dev_appserver.py app.yaml
 
