@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
 
 	"appengine"
 	"appengine/urlfetch"
@@ -41,10 +41,10 @@ func init() {
 	http.HandleFunc("/", handler)
 }
 
-type ZoApiRestaurant struct {  
-    Id string `json:"id"` // Ooops, they have "id":"123" in quotes (should be int)!
-    Name string `json:"name"`
-    Url  string `json:"url"`
+type ZoApiRestaurant struct {
+	Id   string `json:"id"` // Ooops, they have "id":"123" in quotes (should be int)!
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
 // restId = Restaurant ID
@@ -57,7 +57,7 @@ func fetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (s
 	// see https://stackoverflow.com/questions/12864302/how-to-set-headers-in-http-get-request
 	var req, _ = http.NewRequest("GET", url, nil)
 	req.Header.Set("user-key", api_key)
-	req.Header.Set("Accept","application/json")
+	req.Header.Set("Accept", "application/json")
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
@@ -75,7 +75,7 @@ func fetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (s
 		return "", err
 	}
 
-	var str = fmt.Sprintf("HTTP GET returned statsu=%v data=%v", resp.Status,zoApiRest)
+	var str = fmt.Sprintf("HTTP GET returned statsu=%v data=%v", resp.Status, zoApiRest)
 	return str, nil
 }
 
