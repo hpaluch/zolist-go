@@ -61,23 +61,43 @@ Create new application in GAE Dashboard:
 * confirm `us-central` as region
 * click on `Cancel Tutorial` if it bugs you.
 
-Back in your app:
-
-* open `app.yaml` and replace `hp-zolist` with your APP ID:
-
-```yml
-application: PUT_YOUR_APP_ID_HERE
-```
-
 ## Developing app
 
 * to run this app locally use:
 ```bash
-./dev_run.sh
+./run_dev.sh
 ```
 * and go to URL: http://localhost:8080/
 * to view cute Admin interface (something like "Dashboard Lite"
   use: http://localhost:8000
+
+## Deploying app
+
+For the first time you must register your Google Account to deploy app:
+
+* configure your project ID (in my case `hp-zolist`):
+```bash
+gcloud config set project YOUR_APP_ID
+```
+
+* configure your Google Account for GAE:
+```bash
+gcloud config set account YOUR_GOOGLE_ACCOUNT
+```
+* login with your GAE account:
+```bash
+gcloud auth login
+```
+* new browser window should appear:
+  * login or confirm selected account
+  * allow required permissions for `Google Cloud SDK`
+* you should see page with title "You are now authenticated with the Google Cloud SDK!"
+
+And finally:
+* to deploy app run script:
+```bash
+./deploy.sh
+```
 
 
 # Resources
