@@ -1,14 +1,14 @@
 package zolist
 
 import (
-	"html/template"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 	"time"
 
 	"appengine"
-        "appengine/urlfetch"
+	"appengine/urlfetch"
 )
 
 type HomeModel struct {
@@ -39,21 +39,21 @@ func init() {
 }
 
 // restId = Restaurant ID
-func fetchZomatoRestaurant(ctx appengine.Context,api_key string, restId int) (string, error) {
+func fetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (string, error) {
 	var client = urlfetch.Client(ctx)
-        var url = fmt.Sprintf("%s%s%d",
-				"https://developers.zomato.com/api/v2.1",
-				"/restaurant?res_id=",
-				restId)
-	// see https://stackoverflow.com/questions/12864302/how-to-set-headers-in-http-get-request 
+	var url = fmt.Sprintf("%s%s%d",
+		"https://developers.zomato.com/api/v2.1",
+		"/restaurant?res_id=",
+		restId)
+	// see https://stackoverflow.com/questions/12864302/how-to-set-headers-in-http-get-request
 	var req, _ = http.NewRequest("GET", url, nil)
 	req.Header.Set("user-key", api_key)
-        resp, err := client.Do(req)
-        if err != nil {
-		return "",err
-        }
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", err
+	}
 	var str = fmt.Sprintf("HTTP GET returned status %v", resp.Status)
-	return str,nil
+	return str, nil
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -63,10 +63,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			http.StatusInternalServerError)
 	}
 
-	var restId = 18355040; // Lidak
+	var restId = 18355040 // Lidak
 	var ctx = appengine.NewContext(r)
 
-        restStr,err := fetchZomatoRestaurant(ctx,api_key,restId)
+	restStr, err := fetchZomatoRestaurant(ctx, api_key, restId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
