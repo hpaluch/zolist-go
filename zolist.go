@@ -1,22 +1,49 @@
 package zolist
 
 import (
-    "fmt"
+    "html/template"
     "net/http"
     "time"
 )
+
+type HomeModel struct {
+	Now    time.Time
+        Header http.Header
+}
+
+var homeTemplate = template.Must(template.New("home").Parse(`
+<p>Now is: {{ .Now }}</p>
+<h2>Request headers</h2>
+<table>
+   <tr>
+      <th>Key</th><th>-</th><th>Value</th>
+   </tr>
+{{ range $k, $v := .Header }}
+   <tr>
+     <td>{{ $k }}</td><td>=&gt;</td><td>{{ $v }}</td>
+   </tr>
+{{ end }}
+</table>
+<img src='/static/appengine-silver-120x30.gif' alt='GAE' >
+`))
+
+
 
 func init() {
     http.HandleFunc("/", handler)
 }
 
+
+
 func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintln(w, "Future Zomato(TM) menu list, written in Go")
-    fmt.Fprintln(w, "Now is: ",time.Now())
-    fmt.Fprintln(w)
-    fmt.Fprintln(w,"Request headers:")
-    for k,v := range r.Header {
-      fmt.Fprintf(w,"%s -> %s\r\n",k,v)
+
+    homeModel := HomeModel{
+       Now:    time.Now(),
+       Header: r.Header,
+    }
+
+    if err := homeTemplate.Execute(w, homeModel); err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
     }
 }
 

@@ -103,4 +103,5 @@ And finally:
 # Resources
 
 * Official Go on GAE getting started:
-  https://cloud.google.com/appengine/docs/standard/go/download
+  https://cloud.google.com/appengine/docs/standard/go/quickstart
+
