@@ -56,7 +56,7 @@ Create new application in GAE Dashboard:
 * Go to your GAE Dashboard using this link:
   https://console.cloud.google.com/projectselector/appengine/create?lang=go
 * Click on `Create` button
-* Fill in unique _Project name_ (in my case `hp-zolist` 
+* Fill in unique _Project name_ (in my case `hp-zolist`)
 * click on `Create` button
 * confirm `us-central` as region
 * click on `Cancel Tutorial` if it bugs you.
