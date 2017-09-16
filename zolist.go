@@ -48,6 +48,7 @@ func fetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (s
 	// see https://stackoverflow.com/questions/12864302/how-to-set-headers-in-http-get-request
 	var req, _ = http.NewRequest("GET", url, nil)
 	req.Header.Set("user-key", api_key)
+	req.Header.Set("Accept","application/json")
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
