@@ -10,8 +10,8 @@ handlers:
 skip_files:
 - ^(.*/)?#.*#$
 - ^(.*/)?.*~$
-- \.gitignore
+- .*\.(md|sh)$
+- ^\.gitignore$
 - ^\.git/.*
-- .*\.md$
 - ^_scripts/.*
 
