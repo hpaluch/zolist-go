@@ -13,4 +13,5 @@ skip_files:
 - \.gitignore
 - ^\.git/.*
 - .*\.md$
+- ^_scripts/.*
 

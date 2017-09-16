@@ -9,6 +9,33 @@ to list favorite menus - uses Zomato API as data source.
 
 ## Setup
 
+to Get Zomato API key:
+* go to page https://developers.zomato.com/api
+* click on `Generate API Key` button
+* click on `Registrace` (= Register in English)
+* fill in 
+  * `Jméno a příjmení` (= Name and Surname)
+  * `Emailová adresa`  (= e-mail address) 
+  * `Heslo` (= password)
+* click on `Zaregistrovat`
+* login to your mail account
+* click on confirmation mail from `Zomato` user.
+* go back to https://developers.zomato.com/api
+* click on `Generate API Key` button
+* fill in
+  * Phone & Companay/Blog URL
+* and click on `Generate API Key`
+* add your key to your `~/.bashrc` as:
+```bash
+export ZOMATO_API_KEY=your_key
+```
+* and source it:
+```bash
+source ~/.basrc
+```
+
+
+
 Install required components:
 
 * Tested OS: `Ubuntu 16.04.3 LTS`, `x86_64`
