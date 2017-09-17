@@ -7,6 +7,15 @@ Goal is to list favorite menus using Zomato REST API as data source.
 
 > WARNING! It is work in progress - currently it just list of restaurants
 
+This application currently demonstrates:
+* How to 
+  use [urlfetch API](https://cloud.google.com/appengine/docs/standard/go/urlfetch/reference) in Go/GAE to
+  call [Zomato REST API](https://developers.zomato.com/documentation)
+  json service and parse json 
+  using [json.Unmarshall()](https://golang.org/pkg/encoding/json/).
+  Just see [zoapi/zoapi.go](https://github.com/hpaluch/zolist-go/blob/master/zolist/zoapi/zoapi.go)
+* How to [include your own packages](https://golang.org/pkg/encoding/json/)
+  in your GAE program (it is real mess :-)
 
 ## Setup
 
