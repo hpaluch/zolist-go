@@ -1,10 +1,11 @@
 # ZoList - Zomato menu list
 
 
-GAE Application (written in go)
-to list favorite menus - uses Zomato API as data source.
+GAE Application (written in Go)
 
-> WARNING! It is work in progress - currently it just list headers...
+Goal is to list favorite menus using Zomato REST API as data source.
+
+> WARNING! It is work in progress - currently it just list of restaurants
 
 
 ## Setup
