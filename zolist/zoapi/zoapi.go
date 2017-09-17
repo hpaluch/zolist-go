@@ -40,7 +40,7 @@ func fetchZomatoBody(ctx appengine.Context, api_key string, urlAppend string) ([
 	if resp.StatusCode != OkHttpStatus {
 		return nil, errors.New(fmt.Sprintf("API call %s returned unexpected status %d <> %d, body: %s", url, resp.Status, OkHttpStatus, body))
 	}
-	ctx.Infof("Body for %s: %s", url, body)
+	// ctx.Infof("Body for %s: %s", url, body)
 	return body, nil
 
 }
@@ -72,31 +72,28 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 }
 
 /*
-{
-  "daily_menu": [
-    {
-      "daily_menu_id": "16507624",
-      "name": "Vinohradský pivovar",
-      "start_date": "2016-03-08 11:00",
-      "end_date": "2016-03-08 15:00",
-      "dishes": [
-        {
-          "dish_id": "104089345",
-          "name": "Tatarák ze sumce s toustem",
-          "price": "149 Kč"
-        }
-      ]
-    }
-  ]
-}
+Real data (SAPI doc is a bit outdated:
+
+{"daily_menus":[{"daily_menu":{"daily_menu_id":"19148688","start_date":"2017-09-17 00:00:00","end_date":"2017-09-17 23:59:59","name":"","dishes":[{"dish":{"dish_id":"659350170","name":"V\u00fdb\u011br z klasick\u00e9ho j\u00eddeln\u00edho l\u00edstku.","price":""}},{"dish":{"dish_id":"659350171","name":"T\u011b\u0161\u00edme se na Va\u0161i n\u00e1v\u0161t\u011bvu.","price":""}}]}}],"status":"success"}
 */
 
 // Uch, the Json data are a bit weird...
+type Dish struct {
+	Id	int `json:"dish_id,string"`
+	Name	string `json:"name"`
+	Price	string `json:"price"` // should be float, but can be empty!!!
+}
+
+type Dishes struct {
+	Dish	Dish `json:"dish"`
+}
+
 type MenuItemItem struct {
 	Id        int    `json:"daily_menu_id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
 	Name      string `json:"name"`
 	StartDate string `json:"start_date"` // TODO: Date object
 	EndDate   string `json:"end_date"`   // TODO: Date object
+	Dishes	[]Dishes `json:"dishes"`
 }
 
 type MenuItem struct {
@@ -105,6 +102,7 @@ type MenuItem struct {
 
 type Menu struct {
 	MenuItem []MenuItem `json:"daily_menus"`
+	Status	string	`json:"status"`
 }
 
 // restId = Restaurant ID

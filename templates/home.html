@@ -10,11 +10,24 @@
 
 {{ range $i, $v := .Restaurants }}
   <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
-  <p>Debug Restaurant Id: {{ $v.Restaurant.Id }}</p>
-  <p>Debug Menu as String: {{ $v.Menu }}</p>
+  <p>Debug Menu status {{ $v.Menu.Status }}</p>
+  {{ range $i2,$v2 := $v.Menu.MenuItem }}
+   <h3>Menu: {{ $v2.MenuItemItem.Name }}
+	     ({{ len $v2.MenuItemItem.Dishes }} dishes)
+             {{ $v2.MenuItemItem.StartDate }} -
+             {{ $v2.MenuItemItem.StartDate }}</h3>
+   <table>
+    <tr><th>Name</th><th>Price</th></tr>
+    {{ range $i3,$v3 := $v2.MenuItemItem.Dishes }}
+    <tr><td>{{ $v3.Dish.Name }}</td><td>{{ $v3.Dish.Price }}</td></tr>
+    {{ end }}
+   </table> 
+  {{ end }}
+
 {{ end }}
 
   <hr>
+  <p>See <a href="https://github.com/hpaluch/zolist-go" target="github">Source on GitHub!</a></p>
   <p>Powered by <a href="https://golang.org/" target="go">Go</a></p>
   <p>Powered by 
   <a href="https://cloud.google.com/appengine/docs/" target="gae">GAE</a>
