@@ -15,6 +15,8 @@ This application currently demonstrates:
   json service and parse json 
   using [json.Unmarshall()](https://golang.org/pkg/encoding/json/).
   Just see [zolist/zoapi/zoapi.go](https://github.com/hpaluch/zolist-go/blob/master/zolist/zoapi/zoapi.go)
+* How to embed API keys to environment without putting them to Git
+  (see script [_scripts/func.sh](https://github.com/hpaluch/zolist-go/blob/master/_scripts/func.sh))
 * How to [include your own packages](https://golang.org/pkg/encoding/json/)
   in your GAE program (it is real mess :-)
 
