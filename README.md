@@ -9,6 +9,29 @@ to list favorite menus - uses Zomato API as data source.
 
 ## Setup
 
+To **properly** checkout source you must obey following structure:
+```bash
+cd 
+mkdir -p src/github.com/hpaluch/
+cd src/github.com/hpaluch/
+git clone https://github.com/hpaluch/zolist-go.git
+```
+
+> REMEMBER! You must have parent directory structure
+> exactly set to `src/github.com/hpaluch/` otherwise
+> all local go imports like:
+> ```go
+> import (
+>  ...
+>	"github.com/hpaluch/zolist-go/zolist"
+>  ...
+> )
+> ```
+> Would fail!!!
+> Please see discussion
+> at https://cloud.google.com/appengine/docs/flexible/go/using-go-libraries
+
+
 to Get Zomato API key:
 * go to page https://developers.zomato.com/api
 * click on `Generate API Key` button
@@ -137,6 +160,8 @@ And finally:
   https://cloud.google.com/appengine/docs/standard/go/config/appref
 * How to call JSON API:
   https://blog.alexellis.io/golang-json-api-client/
+* Hot to import your libraries:
+  https://cloud.google.com/appengine/docs/flexible/go/using-go-libraries
 * Offtopic: Dynamic eval of variables in bash:
   http://www.tldp.org/LDP/abs/html/ivr.html
 
