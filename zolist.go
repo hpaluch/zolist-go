@@ -1,7 +1,6 @@
 package zolist
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -10,30 +9,28 @@ import (
 	"appengine"
 
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
-	"github.com/hpaluch/zolist-go/zolist/zoconsts"
 )
 
+type HomeRest struct {
+	Restaurant *zoapi.Restaurant
+}
+
 type HomeModel struct {
-	Now    time.Time
-	Header http.Header
-	Info   string
+	Now         time.Time
+	Header      http.Header
+	Restaurants []HomeRest
 }
 
 var homeTemplate = template.Must(template.New("home").Parse(`
 <p>Now is: {{ .Now }}</p>
-<p>Info: {{ .Info }}</p>
-<h2>Request headers</h2>
-<table>
-   <tr>
-      <th>Key</th><th>-</th><th>Value</th>
-   </tr>
-{{ range $k, $v := .Header }}
-   <tr>
-     <td>{{ $k }}</td><td>=&gt;</td><td>{{ $v }}</td>
-   </tr>
+
+{{ range $i, $v := .Restaurants }}
+<h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
+<p>Debug Restaurant Id: {{ $v.Restaurant.Id }}</p>
 {{ end }}
-</table>
-<img src='/static/appengine-silver-120x30.gif' alt='GAE' >
+
+<hr>
+Powered by GAE <img src='/static/appengine-silver-120x30.gif' alt='GAE' >
 `))
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -42,23 +39,27 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal error - missing ZOMATO_API_KEY",
 			http.StatusInternalServerError)
 	}
-
-	var restId = 18355040 // Lidak
 	var ctx = appengine.NewContext(r)
 
-	restaurant, err := zoapi.FetchZomatoRestaurant(ctx, api_key, restId)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	restIds := []int{18355040, // Lidak
+		16513797} // Na Pude
+
+	restModels := make([]HomeRest, len(restIds))
+
+	for i, id := range restIds {
+		restaurant, err := zoapi.FetchZomatoRestaurant(ctx, api_key, id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		restModels[i].Restaurant = restaurant
 	}
 
-	var info = fmt.Sprintf("ZoRest: %v, MaxItems: %d", restaurant,
-		zoconsts.ZoMaxRestItems)
-
 	homeModel := HomeModel{
-		Now:    time.Now(),
-		Header: r.Header,
-		Info:   info,
+		Now:         time.Now(),
+		Header:      r.Header,
+		Restaurants: restModels,
 	}
 
 	if err := homeTemplate.Execute(w, homeModel); err != nil {
