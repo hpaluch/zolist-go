@@ -12,7 +12,10 @@ import (
 
 	"appengine"
 	"appengine/urlfetch"
+
+	"github.com/hpaluch/zolist-go/zolist"
 )
+
 
 type HomeModel struct {
 	Now    time.Time
@@ -36,10 +39,6 @@ var homeTemplate = template.Must(template.New("home").Parse(`
 </table>
 <img src='/static/appengine-silver-120x30.gif' alt='GAE' >
 `))
-
-func init() {
-	http.HandleFunc("/", handler)
-}
 
 type ZoApiRestaurant struct {
 	Id   string `json:"id"` // Ooops, they have "id":"123" in quotes (should be int)!
@@ -95,13 +94,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var info = fmt.Sprintf("ZoRest: %s, MaxItems: %d",restStr,
+			zoconsts.ZoMaxRestItems)
+
 	homeModel := HomeModel{
 		Now:    time.Now(),
 		Header: r.Header,
-		Info:   restStr,
+		Info:   info,
 	}
 
 	if err := homeTemplate.Execute(w, homeModel); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+// main handler fo Go/GAE application
+func init() {
+	http.HandleFunc("/", handler)
+}
+

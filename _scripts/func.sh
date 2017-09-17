@@ -29,3 +29,6 @@ gen_app_yaml () {
 
 }
 
+# point GOPATH to over src/github.com/hpaluch/zolist-go
+export GOPATH=../../../../
+
