@@ -5,7 +5,8 @@ GAE Application (written in Go)
 
 Goal is to list favorite menus using Zomato REST API as data source.
 
-> WARNING! It is work in progress - currently it just list of restaurants
+> WARNING! It is work in progress - currently it just list restaurants
+> using remote REST API
 
 This application currently demonstrates:
 * How to 
@@ -13,7 +14,7 @@ This application currently demonstrates:
   call [Zomato REST API](https://developers.zomato.com/documentation)
   json service and parse json 
   using [json.Unmarshall()](https://golang.org/pkg/encoding/json/).
-  Just see [zoapi/zoapi.go](https://github.com/hpaluch/zolist-go/blob/master/zolist/zoapi/zoapi.go)
+  Just see [zolist/zoapi/zoapi.go](https://github.com/hpaluch/zolist-go/blob/master/zolist/zoapi/zoapi.go)
 * How to [include your own packages](https://golang.org/pkg/encoding/json/)
   in your GAE program (it is real mess :-)
 
