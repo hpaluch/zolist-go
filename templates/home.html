@@ -1,14 +1,24 @@
-<p>Now is: {{ .Now }}</p>
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Favorite restaurants menu</title>
+ </head>
+ <body>
+  <p>Now is: {{ .Now }}</p>
 
 {{ range $i, $v := .Restaurants }}
-<h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
-<p>Debug Restaurant Id: {{ $v.Restaurant.Id }}</p>
+  <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
+  <p>Debug Restaurant Id: {{ $v.Restaurant.Id }}</p>
 {{ end }}
 
-<hr>
-<p>Powered by <a href="https://golang.org/" target="go">Go</a></p>
-<p>Powered by 
-<a href="https://cloud.google.com/appengine/docs/" target="gae">GAE</a>
-<a href="https://cloud.google.com/appengine/docs/" target="gae"><img src='/static/appengine-silver-120x30.gif' alt='GAE' ></a>
-</p>
+  <hr>
+  <p>Powered by <a href="https://golang.org/" target="go">Go</a></p>
+  <p>Powered by 
+  <a href="https://cloud.google.com/appengine/docs/" target="gae">GAE</a>
+  <a href="https://cloud.google.com/appengine/docs/" target="gae"><img src='/static/appengine-silver-120x30.gif' alt='GAE' ></a>
+  </p>
+ </body>
+</html>
 
