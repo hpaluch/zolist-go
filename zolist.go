@@ -16,7 +16,6 @@ import (
 	"github.com/hpaluch/zolist-go/zolist"
 )
 
-
 type HomeModel struct {
 	Now    time.Time
 	Header http.Header
@@ -94,8 +93,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var info = fmt.Sprintf("ZoRest: %s, MaxItems: %d",restStr,
-			zoconsts.ZoMaxRestItems)
+	var info = fmt.Sprintf("ZoRest: %s, MaxItems: %d", restStr,
+		zoconsts.ZoMaxRestItems)
 
 	homeModel := HomeModel{
 		Now:    time.Now(),
@@ -112,4 +111,3 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func init() {
 	http.HandleFunc("/", handler)
 }
-
