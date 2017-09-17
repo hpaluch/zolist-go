@@ -46,13 +46,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	var restId = 18355040 // Lidak
 	var ctx = appengine.NewContext(r)
 
-	restStr, err := zoapi.FetchZomatoRestaurant(ctx, api_key, restId)
+	restaurant, err := zoapi.FetchZomatoRestaurant(ctx, api_key, restId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	var info = fmt.Sprintf("ZoRest: %s, MaxItems: %d", restStr,
+	var info = fmt.Sprintf("ZoRest: %v, MaxItems: %d", restaurant,
 		zoconsts.ZoMaxRestItems)
 
 	homeModel := HomeModel{
