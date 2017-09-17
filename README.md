@@ -169,6 +169,9 @@ And finally:
 
 # Resources
 
+I used many resources to write this program including
+(but no guarantee to be comprehensive!):
+
 * Official Go on GAE getting started:
   https://cloud.google.com/appengine/docs/standard/go/quickstart
 * Understand variable declaration in Go:
@@ -181,4 +184,6 @@ And finally:
   https://cloud.google.com/appengine/docs/flexible/go/using-go-libraries
 * Offtopic: Dynamic eval of variables in bash:
   http://www.tldp.org/LDP/abs/html/ivr.html
+* Nice Gopher logo comes from:
+  https://blog.golang.org/gopher
 

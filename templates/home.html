@@ -4,6 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Favorite restaurants menu</title>
+  <style>
+	img { border: 0 }
+	body { background: #fff; font-family: Verdana, Arial, Helvetica }
+	#footer img { vertical-align: middle }
+        #footer span { float: right; }
+	hr { color: #aaa; }
+        .no-float { clear: both; }
+  </style>
  </head>
  <body>
   <p>Now is: {{ .Now }}</p>
@@ -23,16 +31,18 @@
     {{ end }}
    </table> 
   {{ end }}
-
 {{ end }}
 
-  <hr>
-  <p>See <a href="https://github.com/hpaluch/zolist-go" target="github">Source on GitHub!</a></p>
-  <p>Powered by <a href="https://golang.org/" target="go">Go</a></p>
-  <p>Powered by 
-  <a href="https://cloud.google.com/appengine/docs/" target="gae">GAE</a>
-  <a href="https://cloud.google.com/appengine/docs/" target="gae"><img src='/static/appengine-silver-120x30.gif' alt='GAE' ></a>
-  </p>
+  <hr noshade size="1">
+  <div id="footer">
+   <p>See <a href="https://github.com/hpaluch/zolist-go" target="github">Source on GitHub!</a>
+   <span>Powered by <a href="https://golang.org/"
+                 title="Go language" target="go"><img src="/static/golang.png" alt="Go language" ></a>
+   <a href="https://cloud.google.com/appengine/docs/"
+      title="Google Application Engine (GAE)" target="gae"><img src='/static/appengine-silver-120x30.gif' alt='GAE' ></a></span>
+   </p>
+   <div class="no-float"></div>
+  </div>
  </body>
 </html>
 
