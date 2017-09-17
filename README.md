@@ -5,12 +5,16 @@ GAE Application (written in Go)
 
 Goal is to list favorite menus using Zomato REST API as data source.
 
-> WARNING! It is work in progress - currently it just list restaurants
-> using remote REST API
+> WARNING! It is work in progress! But ... see live demo
+> on https://hp-zolist.appspot.com/ :-)
+>
+> 2017-09-17 Reached
+> [milestone-1](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-1):
+> * really shows menu from Zomato API.
+> * However no caching (yet)
 
-This application currently demonstrates:
-* How to 
-  use [urlfetch API](https://cloud.google.com/appengine/docs/standard/go/urlfetch/reference) in Go/GAE to
+This application shows how to use in Go/GAE:
+* [urlfetch API](https://cloud.google.com/appengine/docs/standard/go/urlfetch/reference) in Go/GAE to
   call [Zomato REST API](https://developers.zomato.com/documentation)
   json service and parse json 
   using [json.Unmarshall()](https://golang.org/pkg/encoding/json/).
