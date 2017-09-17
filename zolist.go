@@ -21,17 +21,8 @@ type HomeModel struct {
 	Restaurants []HomeRest
 }
 
-var homeTemplate = template.Must(template.New("home").Parse(`
-<p>Now is: {{ .Now }}</p>
-
-{{ range $i, $v := .Restaurants }}
-<h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
-<p>Debug Restaurant Id: {{ $v.Restaurant.Id }}</p>
-{{ end }}
-
-<hr>
-Powered by GAE <img src='/static/appengine-silver-120x30.gif' alt='GAE' >
-`))
+// from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
+var tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 func handler(w http.ResponseWriter, r *http.Request) {
 	var api_key = os.Getenv("ZOMATO_API_KEY")
@@ -62,7 +53,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Restaurants: restModels,
 	}
 
-	if err := homeTemplate.Execute(w, homeModel); err != nil {
+	if err := tpl.ExecuteTemplate(w, "home.html", homeModel); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

@@ -43,7 +43,7 @@ git clone https://github.com/hpaluch/zolist-go.git
 > at https://cloud.google.com/appengine/docs/flexible/go/using-go-libraries
 
 
-to Get Zomato API key:
+To Get Zomato API key:
 * go to page https://developers.zomato.com/api
 * click on `Generate API Key` button
 * click on `Registrace` (= Register in English)
