@@ -13,21 +13,14 @@ import (
 	"appengine/urlfetch"
 )
 
-// please see https://golang.org/pkg/encoding/json/
-// for more info about json: tags
-type Restaurant struct {
-	Id   int    `json:"id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
-	Name string `json:"name"`
-	Url  string `json:"url"`
-}
+const zomatoUrlBase = "https://developers.zomato.com/api/v2.1"
 
-// restId = Restaurant ID
-func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*Restaurant, error) {
+// internal helper function to call Zomato API and returns body as string
+func fetchZomatoBody(ctx appengine.Context, api_key string, urlAppend string) ([]byte, error) {
 	var client = urlfetch.Client(ctx)
-	var url = fmt.Sprintf("%s%s%d",
-		"https://developers.zomato.com/api/v2.1",
-		"/restaurant?res_id=",
-		restId)
+	var url = fmt.Sprintf("%s%s",
+		zomatoUrlBase,
+		urlAppend)
 	// see https://stackoverflow.com/questions/12864302/how-to-set-headers-in-http-get-request
 	var req, _ = http.NewRequest("GET", url, nil)
 	req.Header.Set("user-key", api_key)
@@ -47,6 +40,27 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 	if resp.StatusCode != OkHttpStatus {
 		return nil, errors.New(fmt.Sprintf("API call %s returned unexpected status %d <> %d, body: %s", url, resp.Status, OkHttpStatus, body))
 	}
+
+	return body, nil
+
+}
+
+// please see https://golang.org/pkg/encoding/json/
+// for more info about json: tags
+type Restaurant struct {
+	Id   int    `json:"id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
+	Name string `json:"name"`
+	Url  string `json:"url"`
+}
+
+// restId = Restaurant ID
+func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*Restaurant, error) {
+
+	var urlAppend = fmt.Sprintf("%s%d",
+		"/restaurant?res_id=",
+		restId)
+
+	body, err := fetchZomatoBody(ctx, api_key, urlAppend)
 
 	var zoApiRest = Restaurant{}
 	err = json.Unmarshal(body, &zoApiRest)
