@@ -13,6 +13,7 @@ import (
 
 type HomeRest struct {
 	Restaurant *zoapi.Restaurant
+	Menu       *zoapi.Menu
 }
 
 type HomeModel struct {
@@ -43,8 +44,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		menu, err := zoapi.FetchZomatoDailyMenu(ctx, api_key, id)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		restModels[i].Restaurant = restaurant
+		restModels[i].Menu = menu
 	}
 
 	homeModel := HomeModel{

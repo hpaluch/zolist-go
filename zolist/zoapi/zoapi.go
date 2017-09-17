@@ -40,7 +40,7 @@ func fetchZomatoBody(ctx appengine.Context, api_key string, urlAppend string) ([
 	if resp.StatusCode != OkHttpStatus {
 		return nil, errors.New(fmt.Sprintf("API call %s returned unexpected status %d <> %d, body: %s", url, resp.Status, OkHttpStatus, body))
 	}
-
+	ctx.Infof("Body for %s: %s", url, body)
 	return body, nil
 
 }
@@ -69,4 +69,58 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 	}
 
 	return &zoApiRest, nil
+}
+
+/*
+{
+  "daily_menu": [
+    {
+      "daily_menu_id": "16507624",
+      "name": "Vinohradský pivovar",
+      "start_date": "2016-03-08 11:00",
+      "end_date": "2016-03-08 15:00",
+      "dishes": [
+        {
+          "dish_id": "104089345",
+          "name": "Tatarák ze sumce s toustem",
+          "price": "149 Kč"
+        }
+      ]
+    }
+  ]
+}
+*/
+
+// Uch, the Json data are a bit weird...
+type MenuItemItem struct {
+	Id        int    `json:"daily_menu_id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
+	Name      string `json:"name"`
+	StartDate string `json:"start_date"` // TODO: Date object
+	EndDate   string `json:"end_date"`   // TODO: Date object
+}
+
+type MenuItem struct {
+	MenuItemItem MenuItemItem `json:"daily_menu"`
+}
+
+type Menu struct {
+	MenuItem []MenuItem `json:"daily_menus"`
+}
+
+// restId = Restaurant ID
+func FetchZomatoDailyMenu(ctx appengine.Context, api_key string, restId int) (*Menu, error) {
+
+	var urlAppend = fmt.Sprintf("%s%d",
+		"/dailymenu?res_id=",
+		restId)
+
+	body, err := fetchZomatoBody(ctx, api_key, urlAppend)
+
+	var zoApiMenu = Menu{}
+	err = json.Unmarshal(body, &zoApiMenu)
+	if err != nil {
+		return nil, err
+	}
+
+	return &zoApiMenu, nil
 }

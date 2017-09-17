@@ -11,6 +11,7 @@
 {{ range $i, $v := .Restaurants }}
   <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
   <p>Debug Restaurant Id: {{ $v.Restaurant.Id }}</p>
+  <p>Debug Menu as String: {{ $v.Menu }}</p>
 {{ end }}
 
   <hr>
