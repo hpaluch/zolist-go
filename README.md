@@ -12,6 +12,9 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > [milestone-1](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-1):
 > * really shows menu from Zomato API.
 > * However no caching (yet)
+> * restaurant list is hardcoded (shall be in environment for public
+>   and should allow personalisation for logged user)
+>
 
 This application shows how to use in Go/GAE:
 * [urlfetch API](https://cloud.google.com/appengine/docs/standard/go/urlfetch/reference) in Go/GAE to
