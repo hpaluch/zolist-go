@@ -12,6 +12,30 @@
         #footer span { float: right; }
 	hr { color: #aaa; }
         .no-float { clear: both; }
+
+	/* these button styles come from Skeleton,
+           see http://getskeleton.com/ */
+	.button.button-primary { color: #FFF; background-color: #33C3F0; border-color: #33C3F0; }
+	.button {
+	    margin-bottom: 1rem;
+	    display: inline-block;
+	    height: 38px;
+	    padding: 0 30px;
+	    color: #555;
+	    text-align: center;
+	    font-size: 11px;
+	    font-weight: 600;
+	    line-height: 38px;
+	    letter-spacing: .1rem;
+	    text-decoration: none;
+	    white-space: nowrap;
+	    background-color: transparent;
+	    border-radius: 4px;
+	    border: 1px solid #bbb;
+	    cursor: pointer;
+	    box-sizing: border-box;
+	}
+
   </style>
  </head>
  <body>
@@ -36,7 +60,8 @@
 
   <hr noshade size="1">
   <div id="footer">
-   <p>See <a href="https://github.com/hpaluch/zolist-go" target="github">Source on GitHub!</a>
+   <p>See <a href="https://github.com/hpaluch/zolist-go"
+           class="button button-primary" target="github">Source on GitHub!</a>
    <span>Powered by <a href="https://golang.org/"
                  title="Go language" target="go"><img src="/static/golang.png" alt="Go language" ></a>
    <a href="https://cloud.google.com/appengine/docs/"

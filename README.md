@@ -189,5 +189,6 @@ I used many resources to write this program including
 * Powere by GAE logo - I'm unable to find source
 * Favicon.ico comes from:
   https://cloud.google.com/_static/b2910b9266/images/cloud/icons/favicons/favicon.ico
-  https://cloud.google.com/_static/b2910b9266/images/cloud/icons/favicons/favicon.ico
+* modified Source button CSS styles come from Skeleton
+  http://getskeleton.com
 
