@@ -79,21 +79,21 @@ Real data (SAPI doc is a bit outdated:
 
 // Uch, the Json data are a bit weird...
 type Dish struct {
-	Id	int `json:"dish_id,string"`
-	Name	string `json:"name"`
-	Price	string `json:"price"` // should be float, but can be empty!!!
+	Id    int    `json:"dish_id,string"`
+	Name  string `json:"name"`
+	Price string `json:"price"` // should be float, but can be empty!!!
 }
 
 type Dishes struct {
-	Dish	Dish `json:"dish"`
+	Dish Dish `json:"dish"`
 }
 
 type MenuItemItem struct {
-	Id        int    `json:"daily_menu_id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
-	Name      string `json:"name"`
-	StartDate string `json:"start_date"` // TODO: Date object
-	EndDate   string `json:"end_date"`   // TODO: Date object
-	Dishes	[]Dishes `json:"dishes"`
+	Id        int      `json:"daily_menu_id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
+	Name      string   `json:"name"`
+	StartDate string   `json:"start_date"` // TODO: Date object
+	EndDate   string   `json:"end_date"`   // TODO: Date object
+	Dishes    []Dishes `json:"dishes"`
 }
 
 type MenuItem struct {
@@ -102,7 +102,7 @@ type MenuItem struct {
 
 type Menu struct {
 	MenuItem []MenuItem `json:"daily_menus"`
-	Status	string	`json:"status"`
+	Status   string     `json:"status"`
 }
 
 // restId = Restaurant ID

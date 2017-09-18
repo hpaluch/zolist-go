@@ -26,6 +26,14 @@ type HomeModel struct {
 var tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 func handler(w http.ResponseWriter, r *http.Request) {
+
+	// report 404 for other path than "/"
+	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
 	var api_key = os.Getenv("ZOMATO_API_KEY")
 	if api_key == "" {
 		http.Error(w, "Internal error - missing ZOMATO_API_KEY",
