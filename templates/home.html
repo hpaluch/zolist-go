@@ -18,9 +18,9 @@
 
 {{ range $i, $v := .Restaurants }}
   <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
-  <p>Debug Menu status {{ $v.Menu.Status }}</p>
   {{ range $i2,$v2 := $v.Menu.MenuItem }}
-   <h3>Menu: {{ $v2.MenuItemItem.Name }}
+   <h3 title="Menu status: {{ $v.Menu.Status }}">Menu:
+             {{ $v2.MenuItemItem.Name }}
 	     ({{ len $v2.MenuItemItem.Dishes }} dishes)
              {{ $v2.MenuItemItem.StartDate }} -
              {{ $v2.MenuItemItem.StartDate }}</h3>
