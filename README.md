@@ -11,7 +11,7 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > 2017-09-17 Reached
 > [milestone-1](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-1):
 > * really shows menu from Zomato API.
-> * However no caching (yet)
+> * Partial caching (Restaurant struct in datastore)
 > * restaurant list is hardcoded (shall be in environment for public
 >   and should allow personalisation for logged user)
 >
@@ -22,6 +22,8 @@ This application shows how to use in Go/GAE:
   json service and parse json 
   using [json.Unmarshall()](https://golang.org/pkg/encoding/json/).
   Just see [zolist/zoapi/zoapi.go](https://github.com/hpaluch/zolist-go/blob/master/zolist/zoapi/zoapi.go)
+* using [datastore API](https://cloud.google.com/appengine/docs/standard/go/datastore/reference) for simple caching of restaurants
+  See [zolist/zocache/zocache.go](https://github.com/hpaluch/zolist-go/blob/master/zolist/zocache/zocache.go)
 * How to embed API keys to environment without putting them to Git
   (see script [_scripts/func.sh](https://github.com/hpaluch/zolist-go/blob/master/_scripts/func.sh))
 * How to [include your own packages](https://golang.org/pkg/encoding/json/)
