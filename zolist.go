@@ -9,6 +9,7 @@ import (
 	"appengine"
 
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
+	"github.com/hpaluch/zolist-go/zolist/zocache"
 )
 
 type HomeRest struct {
@@ -17,11 +18,11 @@ type HomeRest struct {
 }
 
 type HomeModel struct {
-	Now         time.Time
-	Header      http.Header
-	Restaurants []HomeRest
-	RenderTime	string
-	ServerSoftware	string
+	Now            time.Time
+	Header         http.Header
+	Restaurants    []HomeRest
+	RenderTime     string
+	ServerSoftware string
 }
 
 // from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
@@ -62,7 +63,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	restModels := make([]HomeRest, len(restIds))
 
 	for i, id := range restIds {
-		restaurant, err := zoapi.FetchZomatoRestaurant(ctx, api_key, id)
+		restaurant, err := zocache.FetchZomatoRestaurant(ctx, api_key, id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -78,10 +79,10 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	homeModel := HomeModel{
-		Now:         time.Now(),
-		Header:      r.Header,
-		Restaurants: restModels,
-		RenderTime:  time.Since(tic).String(),
+		Now:            time.Now(),
+		Header:         r.Header,
+		Restaurants:    restModels,
+		RenderTime:     time.Since(tic).String(),
 		ServerSoftware: appengine.ServerSoftware(),
 	}
 
