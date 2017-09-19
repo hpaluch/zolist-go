@@ -27,6 +27,7 @@ var tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
+	var ctx = appengine.NewContext(r)
 	// report 404 for other path than "/"
 	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
 	if r.URL.Path != "/" {
@@ -34,12 +35,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// how to trigger this error:
+	// curl -X POST -v http://localhost:8080
+	if r.Method != "GET" && r.Method != "HEAD" {
+		ctx.Errorf("Method '%s' not allowed for path '%s'",
+			r.Method,r.URL.Path)
+		http.Error(w,"Method not allowed",
+			http.StatusMethodNotAllowed)
+		return
+	}
+
 	var api_key = os.Getenv("ZOMATO_API_KEY")
 	if api_key == "" {
 		http.Error(w, "Internal error - missing ZOMATO_API_KEY",
 			http.StatusInternalServerError)
+		return
 	}
-	var ctx = appengine.NewContext(r)
 
 	restIds := []int{18355040, // Lidak
 		16513797} // Na Pude
