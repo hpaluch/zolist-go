@@ -22,7 +22,6 @@ type HomeModel struct {
 	Restaurants []HomeRest
 	RenderTime	string
 	ServerSoftware	string
-	AppVersion	string
 }
 
 // from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
@@ -84,7 +83,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Restaurants: restModels,
 		RenderTime:  time.Since(tic).String(),
 		ServerSoftware: appengine.ServerSoftware(),
-		AppVersion:	appengine.VersionID(ctx),
 	}
 
 	if err := tpl.ExecuteTemplate(w, "home.html", homeModel); err != nil {
