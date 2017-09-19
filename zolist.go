@@ -20,6 +20,9 @@ type HomeModel struct {
 	Now         time.Time
 	Header      http.Header
 	Restaurants []HomeRest
+	RenderTime	string
+	ServerSoftware	string
+	AppVersion	string
 }
 
 // from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
@@ -27,6 +30,8 @@ var tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
+	// tic code got from https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
+	tic := time.Now()
 	var ctx = appengine.NewContext(r)
 	// report 404 for other path than "/"
 	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
@@ -37,7 +42,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	// how to trigger this error:
 	// curl -X POST -v http://localhost:8080
-	if r.Method != "GET" && r.Method != "HEAD" {
+	if r.Method != "GET" {
 		ctx.Errorf("Method '%s' not allowed for path '%s'",
 			r.Method, r.URL.Path)
 		http.Error(w, "Method not allowed",
@@ -77,6 +82,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		Now:         time.Now(),
 		Header:      r.Header,
 		Restaurants: restModels,
+		RenderTime:  time.Since(tic).String(),
+		ServerSoftware: appengine.ServerSoftware(),
+		AppVersion:	appengine.VersionID(ctx),
 	}
 
 	if err := tpl.ExecuteTemplate(w, "home.html", homeModel); err != nil {

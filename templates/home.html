@@ -11,6 +11,7 @@
 	#footer img { vertical-align: middle }
         #footer span { float: right; }
 	hr { color: #aaa; }
+	.small { font-size: x-small; }
         .no-float { clear: both; }
 
 	/* these button styles come from Skeleton,
@@ -68,6 +69,9 @@
       title="Google Application Engine (GAE)" target="gae"><img src='/static/appengine-silver-120x30.gif' alt='GAE' ></a></span>
    </p>
    <div class="no-float"></div>
+   <p class="small">Render Time: {{ .RenderTime }},
+		    Server Software: {{ .ServerSoftware }}
+		    App Version: {{ .AppVersion }}</p>
   </div>
  </body>
 </html>

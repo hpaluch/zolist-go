@@ -194,4 +194,5 @@ I used many resources to write this program including
   https://cloud.google.com/_static/b2910b9266/images/cloud/icons/favicons/favicon.ico
 * modified Source button CSS styles come from Skeleton
   http://getskeleton.com
-
+* How to get timing and allowed methods:
+  https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
