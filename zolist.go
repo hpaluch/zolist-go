@@ -39,8 +39,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	// curl -X POST -v http://localhost:8080
 	if r.Method != "GET" && r.Method != "HEAD" {
 		ctx.Errorf("Method '%s' not allowed for path '%s'",
-			r.Method,r.URL.Path)
-		http.Error(w,"Method not allowed",
+			r.Method, r.URL.Path)
+		http.Error(w, "Method not allowed",
 			http.StatusMethodNotAllowed)
 		return
 	}
