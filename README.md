@@ -8,10 +8,15 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > WARNING! It is work in progress! But ... see live demo
 > on https://hp-zolist.appspot.com/ :-)
 >
+> 2017-09-20 Reached
+> [milestone-2](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-2):
+> * Partial caching (Restaurant struct in datastore. It is simple
+>   struct which changes infrequently - ideal fit for datastore)
+>
 > 2017-09-17 Reached
 > [milestone-1](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-1):
 > * really shows menu from Zomato API.
-> * Partial caching (Restaurant struct in datastore)
+> * no caching (yet)
 > * restaurant list is hardcoded (shall be in environment for public
 >   and should allow personalisation for logged user)
 >
