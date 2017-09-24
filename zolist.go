@@ -1,9 +1,12 @@
 package zolist
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"appengine"
@@ -17,6 +20,9 @@ var (
 	tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 	zomato_api_key = os.Getenv("ZOMATO_API_KEY")
+	str_rest_ids   = os.Getenv("REST_IDS")
+	// initialized in init()
+	rest_ids []int
 
 )
 
@@ -56,12 +62,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	restIds := []int{18355040, // Lidak
-		16513797} // Na Pude
+	restModels := make([]HomeRest, len(rest_ids))
 
-	restModels := make([]HomeRest, len(restIds))
-
-	for i, id := range restIds {
+	for i, id := range rest_ids {
 		restaurant, err := zocache.FetchZomatoRestaurant(ctx, zomato_api_key, id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -93,7 +96,25 @@ func handler(w http.ResponseWriter, r *http.Request) {
 // main handler fo Go/GAE application
 func init() {
 	if zomato_api_key == "" {
-		panic("Fatal error - missing ZOMATO_API_KEY in app.yaml")
+		panic("Fatal error - missing/empty ZOMATO_API_KEY in app.yaml")
+	}
+
+	if str_rest_ids == "" {
+		panic("Fatal error - missing/empty REST_IDS in app.yaml")
+	}
+
+	var arrIds = strings.Split(str_rest_ids,",")
+	if len(arrIds) == 0 {
+		panic("No id found in REST_IDS")
+	}
+	rest_ids = make([]int,len(arrIds))
+	for i,v := range arrIds {
+		id,err := strconv.Atoi(v)
+		if err != nil {
+			panic(fmt.Sprintf("Unable to parse '%s' as Int: %v",
+				v,err))
+		}
+		rest_ids [i] = id
 	}
 
 	http.HandleFunc("/", handler)

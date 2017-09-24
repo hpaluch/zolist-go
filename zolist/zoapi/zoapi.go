@@ -65,6 +65,7 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 	var zoApiRest = Restaurant{}
 	err = json.Unmarshal(body, &zoApiRest)
 	if err != nil {
+		ctx.Errorf("Unable to Unmarshall '%s': %v",body,err)
 		return nil, err
 	}
 

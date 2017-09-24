@@ -8,6 +8,9 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > WARNING! It is work in progress! But ... see live demo
 > on https://hp-zolist.appspot.com/ :-)
 >
+> 2017-09-24
+> * You can now use `REST_IDS` variable to pass custom public
+>   Restaurant IDs
 > 2017-09-20 Reached
 > [milestone-2](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-2):
 > * Partial caching (Restaurant struct in datastore. It is simple
