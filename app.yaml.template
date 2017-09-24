@@ -17,6 +17,7 @@ skip_files:
 - ^\.gitignore$
 - ^\.git/.*
 - ^_scripts/.*
+- ^app\.yaml\.template
 
 # these files are imported as src/github.com/hpaluch/...
 # and may not be part of app
