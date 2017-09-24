@@ -14,8 +14,10 @@ import (
 const restaurantClassVersion = 1
 
 func genRestaurantKey(ctx appengine.Context, restId int) *datastore.Key {
-	var strKey = fmt.Sprintf("%d:%d", restaurantClassVersion, restId)
-	return datastore.NewKey(ctx, "Restaurant", strKey, 0, nil)
+	var strKind = fmt.Sprintf("Restaurant%d",restaurantClassVersion)
+	var strKey = fmt.Sprintf("%d", restId)
+	// Do NOT use int key - it may collide with other enitites!!!
+	return datastore.NewKey(ctx, strKind, strKey, 0, nil)
 }
 
 func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*zoapi.Restaurant, error) {
@@ -30,7 +32,7 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 	}
 	// err nil = entity Get() successfully
 	if err == nil {
-		ctx.Debugf("Cache hit %v", entity)
+		// ctx.Debugf("Cache hit %v", entity)
 		return entity, nil
 	}
 

@@ -13,6 +13,7 @@
 	hr { color: #aaa; }
 	.small { font-size: x-small; }
         .no-float { clear: both; }
+	div.menu { margin-left: 1em; }
 
 	/* these button styles come from Skeleton,
            see http://getskeleton.com/ */
@@ -44,6 +45,7 @@
 
 {{ range $i, $v := .Restaurants }}
   <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
+  <div class="menu">
   {{ range $i2,$v2 := $v.Menu.MenuItem }}
    <h3 title="Menu status: {{ $v.Menu.Status }}">Menu:
              {{ $v2.MenuItemItem.Name }}
@@ -57,6 +59,8 @@
     {{ end }}
    </table> 
   {{ end }}
+  <p class="small">Updated on: {{ $v.Menu.Changed }}</p>
+  </div>
 {{ end }}
 
   <hr noshade size="1">

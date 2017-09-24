@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"appengine"
 	"appengine/urlfetch"
@@ -51,6 +52,7 @@ type Restaurant struct {
 	Id   int    `json:"id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
 	Name string `json:"name"`
 	Url  string `json:"url"`
+	Changed time.Time
 }
 
 // restId = Restaurant ID
@@ -69,6 +71,7 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 		return nil, err
 	}
 
+	zoApiRest.Changed = time.Now()
 	return &zoApiRest, nil
 }
 
@@ -104,6 +107,7 @@ type MenuItem struct {
 type Menu struct {
 	MenuItem []MenuItem `json:"daily_menus"`
 	Status   string     `json:"status"`
+	Changed time.Time
 }
 
 // restId = Restaurant ID
@@ -121,5 +125,6 @@ func FetchZomatoDailyMenu(ctx appengine.Context, api_key string, restId int) (*M
 		return nil, err
 	}
 
+	zoApiMenu.Changed = time.Now()
 	return &zoApiMenu, nil
 }
