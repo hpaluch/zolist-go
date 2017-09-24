@@ -56,12 +56,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if zomato_api_key == "" {
-		http.Error(w, "Internal error - missing ZOMATO_API_KEY",
-			http.StatusInternalServerError)
-		return
-	}
-
 	restIds := []int{18355040, // Lidak
 		16513797} // Na Pude
 
@@ -98,5 +92,9 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 // main handler fo Go/GAE application
 func init() {
+	if zomato_api_key == "" {
+		panic("Fatal error - missing ZOMATO_API_KEY in app.yaml")
+	}
+
 	http.HandleFunc("/", handler)
 }
