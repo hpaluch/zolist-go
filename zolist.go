@@ -12,6 +12,14 @@ import (
 	"github.com/hpaluch/zolist-go/zolist/zocache"
 )
 
+var (
+	// from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
+	tpl = template.Must(template.ParseGlob("templates/*.html"))
+
+	zomato_api_key = os.Getenv("ZOMATO_API_KEY")
+
+)
+
 type HomeRest struct {
 	Restaurant *zoapi.Restaurant
 	Menu       *zoapi.Menu
@@ -25,8 +33,6 @@ type HomeModel struct {
 	ServerSoftware string
 }
 
-// from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
-var tpl = template.Must(template.ParseGlob("templates/*.html"))
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
@@ -50,8 +56,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var api_key = os.Getenv("ZOMATO_API_KEY")
-	if api_key == "" {
+	if zomato_api_key == "" {
 		http.Error(w, "Internal error - missing ZOMATO_API_KEY",
 			http.StatusInternalServerError)
 		return
@@ -63,12 +68,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	restModels := make([]HomeRest, len(restIds))
 
 	for i, id := range restIds {
-		restaurant, err := zocache.FetchZomatoRestaurant(ctx, api_key, id)
+		restaurant, err := zocache.FetchZomatoRestaurant(ctx, zomato_api_key, id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		menu, err := zoapi.FetchZomatoDailyMenu(ctx, api_key, id)
+		menu, err := zoapi.FetchZomatoDailyMenu(ctx, zomato_api_key, id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
