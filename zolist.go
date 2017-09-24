@@ -22,8 +22,8 @@ var (
 	zomato_api_key = os.Getenv("ZOMATO_API_KEY")
 	str_rest_ids   = os.Getenv("REST_IDS")
 	// initialized in init()
-	rest_ids []int
-
+	rest_ids       []int
+	czech_location *time.Location
 )
 
 type HomeRest struct {
@@ -32,13 +32,13 @@ type HomeRest struct {
 }
 
 type HomeModel struct {
-	Now            time.Time
+	NowUTC         time.Time
+	NowCZ          time.Time
 	Header         http.Header
 	Restaurants    []HomeRest
 	RenderTime     string
 	ServerSoftware string
 }
-
 
 func handler(w http.ResponseWriter, r *http.Request) {
 
@@ -81,7 +81,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	homeModel := HomeModel{
-		Now:            time.Now(),
+		NowUTC:         time.Now(),
+		NowCZ:          time.Now().In(czech_location),
 		Header:         r.Header,
 		Restaurants:    restModels,
 		RenderTime:     time.Since(tic).String(),
@@ -95,6 +96,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 // main handler fo Go/GAE application
 func init() {
+
+	var err error
+	czech_location, err = time.LoadLocation("Europe/Prague")
+	if err != nil {
+		panic(fmt.Sprintf("Fatal error - unable to load timezone: %v", err))
+	}
+
 	if zomato_api_key == "" {
 		panic("Fatal error - missing/empty ZOMATO_API_KEY in app.yaml")
 	}
@@ -103,18 +111,18 @@ func init() {
 		panic("Fatal error - missing/empty REST_IDS in app.yaml")
 	}
 
-	var arrIds = strings.Split(str_rest_ids,",")
+	var arrIds = strings.Split(str_rest_ids, ",")
 	if len(arrIds) == 0 {
 		panic("No id found in REST_IDS")
 	}
-	rest_ids = make([]int,len(arrIds))
-	for i,v := range arrIds {
-		id,err := strconv.Atoi(v)
+	rest_ids = make([]int, len(arrIds))
+	for i, v := range arrIds {
+		id, err := strconv.Atoi(v)
 		if err != nil {
 			panic(fmt.Sprintf("Unable to parse '%s' as Int: %v",
-				v,err))
+				v, err))
 		}
-		rest_ids [i] = id
+		rest_ids[i] = id
 	}
 
 	http.HandleFunc("/", handler)

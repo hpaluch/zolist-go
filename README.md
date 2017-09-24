@@ -206,3 +206,7 @@ I used many resources to write this program including
   http://getskeleton.com
 * How to get timing and allowed methods:
   https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
+* How to use timezone different than UTC:
+  https://stackoverflow.com/questions/25318154/convert-utc-to-local-time-go
+* How to format time in HTML templates:
+  https://stackoverflow.com/questions/18598480/execute-formatted-time-in-a-slice-with-html-template 

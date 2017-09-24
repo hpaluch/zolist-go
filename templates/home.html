@@ -40,7 +40,8 @@
   </style>
  </head>
  <body>
-  <p>Now is: {{ .Now }}</p>
+  <p>Now is:
+   <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ .NowCZ.Format "02.01.2006 15:04:05 MST" }}</span></p>
 
 {{ range $i, $v := .Restaurants }}
   <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
