@@ -18,6 +18,7 @@ skip_files:
 - ^\.git/.*
 - ^_scripts/.*
 - ^app\.yaml\.template
+- ^zolist/.*\.go$
 
 # these files are imported as src/github.com/hpaluch/...
 # and may not be part of app
