@@ -2,27 +2,20 @@
 
 # shell helper functions
 
-check_zomato_key () {
-
-	[ "x$ZOMATO_API_KEY" != "x" ] || {
-		echo -e "ERROR:\tUndefined variable ZOMATO_API_KEY" >&2
-		echo -e "\tGo to https://developers.zomato.com/api to get API key" >&2
-		echo -e "\tand set shell variable like: export ZOMATO_API_KEY=my_key" >&2
-		exit 1
-	}
-
-
-}
-
 gen_app_yaml () {
-	check_zomato_key
+	# default Restaurant IDS:   Ldiak    Na Pude  Flamingo
+	export REST_IDS=${REST_IDS:-18355040,16513797,16512711}
 	{
 		echo "# DO NOT EDIT - Generated at `date`"
 		cat app.yaml.template
 		echo "env_variables:"
-		for i in ZOMATO_API_KEY
+		for i in ZOMATO_API_KEY REST_IDS
 		do
 			eval val="\$$i"
+			[ -n "$val" ] || {
+				echo "Mandatory variable '$val' undefined" >&2
+				exit 1
+			}
 			echo "    $i: '$val'"
 		done
 	} > app.yaml
