@@ -41,7 +41,7 @@
  </head>
  <body>
   <p>Now is:
-   <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ .NowCZ.Format "02.01.2006 15:04:05 MST" }}</span></p>
+   <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ ZoCzDateFormat .NowUTC }}</span></p>
 
 {{ range $i, $v := .Restaurants }}
   <h2><a href="{{ $v.Restaurant.Url  }}" target="zomato">{{ $v.Restaurant.Name }}</a></h2>
@@ -59,7 +59,7 @@
     {{ end }}
    </table> 
   {{ end }}
-  <p class="small">Updated on: {{ $v.Menu.Changed }}</p>
+  <p class="small">Updated on: {{ ZoCzDateFormat $v.Menu.Changed }}</p>
   </div>
 {{ end }}
 

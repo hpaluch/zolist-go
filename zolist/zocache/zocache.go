@@ -14,7 +14,7 @@ import (
 const restaurantClassVersion = 1
 
 func genRestaurantKey(ctx appengine.Context, restId int) *datastore.Key {
-	var strKind = fmt.Sprintf("Restaurant%d",restaurantClassVersion)
+	var strKind = fmt.Sprintf("Restaurant%d", restaurantClassVersion)
 	var strKey = fmt.Sprintf("%d", restId)
 	// Do NOT use int key - it may collide with other enitites!!!
 	return datastore.NewKey(ctx, strKind, strKey, 0, nil)

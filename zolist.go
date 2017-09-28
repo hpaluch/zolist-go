@@ -1,6 +1,7 @@
 package zolist
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -16,14 +17,30 @@ import (
 	"github.com/hpaluch/zolist-go/zolist/zoconsts"
 )
 
+func tplCzDateStr(timeArg interface{}) (string, error) {
+	// Type Assertion - please see:
+	//    https://stackoverflow.com/questions/14289256/cannot-convert-data-type-interface-to-type-string-need-type-assertion
+	t, ok := timeArg.(time.Time)
+	if !ok {
+		var errMsg = fmt.Sprintf("Unsupported argument type: %T, expecting time.Time", timeArg)
+		return "", errors.New(errMsg)
+	}
+
+	return t.In(zoconsts.CzechLocation).Format("02.01.2006 15:04:05 MST"), nil
+}
+
 var (
+	tplFn = template.FuncMap{
+		"ZoCzDateFormat": tplCzDateStr,
+	}
+
 	// from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
-	tpl = template.Must(template.ParseGlob("templates/*.html"))
+	tpl = template.Must(template.New("").Funcs(tplFn).ParseGlob("templates/*.html"))
 
 	zomato_api_key = os.Getenv("ZOMATO_API_KEY")
 	str_rest_ids   = os.Getenv("REST_IDS")
 	// initialized in init()
-	rest_ids       []int
+	rest_ids []int
 )
 
 type HomeRest struct {
@@ -33,7 +50,6 @@ type HomeRest struct {
 
 type HomeModel struct {
 	NowUTC         time.Time
-	NowCZ          time.Time
 	Header         http.Header
 	Restaurants    []HomeRest
 	RenderTime     string
@@ -82,7 +98,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	homeModel := HomeModel{
 		NowUTC:         time.Now(),
-		NowCZ:          time.Now().In(zoconsts.CzechLocation),
 		Header:         r.Header,
 		Restaurants:    restModels,
 		RenderTime:     time.Since(tic).String(),

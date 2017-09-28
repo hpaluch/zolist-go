@@ -49,9 +49,9 @@ func fetchZomatoBody(ctx appengine.Context, api_key string, urlAppend string) ([
 // please see https://golang.org/pkg/encoding/json/
 // for more info about json: tags
 type Restaurant struct {
-	Id   int    `json:"id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
-	Name string `json:"name"`
-	Url  string `json:"url"`
+	Id      int    `json:"id,string"` // Ooops, they have "id":"123" in quotes (should be int)!
+	Name    string `json:"name"`
+	Url     string `json:"url"`
 	Changed time.Time
 }
 
@@ -107,7 +107,7 @@ type MenuItem struct {
 type Menu struct {
 	MenuItem []MenuItem `json:"daily_menus"`
 	Status   string     `json:"status"`
-	Changed time.Time
+	Changed  time.Time
 }
 
 // restId = Restaurant ID
