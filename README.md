@@ -210,3 +210,5 @@ I used many resources to write this program including
   https://stackoverflow.com/questions/25318154/convert-utc-to-local-time-go
 * How to format time in HTML templates:
   https://stackoverflow.com/questions/18598480/execute-formatted-time-in-a-slice-with-html-template 
+* How to use custom template functions:
+  http://technosophos.com/2013/11/23/using-custom-template-functions-in-go.html
