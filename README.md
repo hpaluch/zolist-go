@@ -204,7 +204,7 @@ I used many resources to write this program including
   http://www.tldp.org/LDP/abs/html/ivr.html
 * Nice Gopher logo comes from:
   https://blog.golang.org/gopher
-* Powere by GAE logo - I'm unable to find source
+* Powered by GAE logo - I'm unable to find source
 * Favicon.ico comes from:
   https://cloud.google.com/_static/b2910b9266/images/cloud/icons/favicons/favicon.ico
 * modified Source button CSS styles come from Skeleton
@@ -219,4 +219,6 @@ I used many resources to write this program including
   http://technosophos.com/2013/11/23/using-custom-template-functions-in-go.html
 * How to use Codec with memcache:
   https://gist.github.com/ImJasonH/e846785003b0509be05f
+* How to round time.Duration
+  http://grokbase.com/t/gg/golang-nuts/1492epp0qb/go-nuts-how-to-round-a-duration
 

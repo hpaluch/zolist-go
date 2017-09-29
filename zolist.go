@@ -29,9 +29,31 @@ func tplCzDateStr(timeArg interface{}) (string, error) {
 	return t.In(zoconsts.CzechLocation).Format("02.01.2006 15:04:05 MST"), nil
 }
 
+func tplCzDateStrWithAgo(timeArg interface{}) (string, error) {
+	var dateStr,err = tplCzDateStr(timeArg)
+	if err != nil {
+		return "",err
+	}
+	// timeArg was verified by tplCzDateStr
+	t,_ := timeArg.(time.Time)
+
+	// compute ago
+	var czNow = time.Now().In(zoconsts.CzechLocation)
+	var duration = czNow.Sub(t)
+	// round to millisecond
+	// see: http://grokbase.com/t/gg/golang-nuts/1492epp0qb/go-nuts-how-to-round-a-duration
+	duration =  ((duration + time.Millisecond/2) / time.Millisecond ) * time.Millisecond
+	var czAgo = time.Duration(duration).String()
+
+	var str = fmt.Sprintf("%s (%s ago)",dateStr,czAgo)
+	return str,nil
+}
+
+
 var (
 	tplFn = template.FuncMap{
 		"ZoCzDateFormat": tplCzDateStr,
+		"ZoCzDateFormatWithAgo": tplCzDateStrWithAgo,
 	}
 
 	// from: https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
