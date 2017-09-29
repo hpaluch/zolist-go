@@ -70,6 +70,8 @@ type DetailMenuModel struct {
 	LayoutModel zoutils.LayoutModel
 	Restaurant  *zoapi.Restaurant
 	Menu        *zoapi.Menu
+	NextId		*int
+	PrevId		*int
 }
 
 var reDetailPath = regexp.MustCompile(`^/menu/(\d{1,12})$`)
@@ -103,10 +105,19 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Can't parse ID to int", http.StatusInternalServerError)
 	}
 
-	if !zoutils.SearchIntArray(rest_ids, id) {
+	var list_index = zoutils.SearchIntArray(rest_ids, id)
+	if list_index == -1 {
 		ctx.Errorf("id (%d) not found in list: %v", id, rest_ids)
 		http.NotFound(w, r)
 		return
+	}
+	var next_id *int = nil
+	if list_index+1 < len(rest_ids) {
+		next_id = &rest_ids[list_index+1]
+	}
+	var prev_id *int = nil
+	if list_index > 0 {
+		prev_id = &rest_ids[list_index-1]
 	}
 
 	restaurant, err := zocache.FetchZomatoRestaurant(ctx, zomato_api_key, id)
@@ -125,6 +136,8 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		LayoutModel: zoutils.CreateLayoutModel(tic, title),
 		Restaurant:  restaurant,
 		Menu:        menu,
+		NextId:		next_id,
+		PrevId:		prev_id,
 	}
 
 	if err := tpl.ExecuteTemplate(w, "detail.html", model); err != nil {

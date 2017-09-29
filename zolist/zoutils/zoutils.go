@@ -43,11 +43,12 @@ func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Reque
 	return true
 }
 
-func SearchIntArray(arr []int, key int) bool {
-	for _, v := range arr {
+// returns -1 when not found
+func SearchIntArray(arr []int, key int) int {
+	for i, v := range arr {
 		if v == key {
-			return true
+			return i
 		}
 	}
-	return false
+	return -1
 }
