@@ -72,11 +72,8 @@ type HomeRest struct {
 }
 
 type HomeModel struct {
-	NowUTC         time.Time
-	Header         http.Header
+	LayoutModel    zoutils.LayoutModel
 	Restaurants    []HomeRest
-	RenderTime     string
-	ServerSoftware string
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -120,11 +117,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	homeModel := HomeModel{
-		NowUTC:         time.Now(),
-		Header:         r.Header,
+		LayoutModel:	zoutils.CreateLayoutModel(tic,"Favorite Restaurants menu"),
 		Restaurants:    restModels,
-		RenderTime:     zoutils.RoundDurationToMs(time.Since(tic)).String(),
-		ServerSoftware: appengine.ServerSoftware(),
 	}
 
 	if err := tpl.ExecuteTemplate(w, "home.html", homeModel); err != nil {
