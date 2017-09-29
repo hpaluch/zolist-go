@@ -217,3 +217,6 @@ I used many resources to write this program including
   https://stackoverflow.com/questions/18598480/execute-formatted-time-in-a-slice-with-html-template 
 * How to use custom template functions:
   http://technosophos.com/2013/11/23/using-custom-template-functions-in-go.html
+* How to use Codec with memcache:
+  https://gist.github.com/ImJasonH/e846785003b0509be05f
+
