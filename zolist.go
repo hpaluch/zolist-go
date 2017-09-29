@@ -15,6 +15,7 @@ import (
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
 	"github.com/hpaluch/zolist-go/zolist/zocache"
 	"github.com/hpaluch/zolist-go/zolist/zoconsts"
+	"github.com/hpaluch/zolist-go/zolist/zoutils"
 )
 
 func tplCzDateStr(timeArg interface{}) (string, error) {
@@ -42,7 +43,7 @@ func tplCzDateStrWithAgo(timeArg interface{}) (string, error) {
 	var duration = czNow.Sub(t)
 	// round to millisecond
 	// see: http://grokbase.com/t/gg/golang-nuts/1492epp0qb/go-nuts-how-to-round-a-duration
-	duration =  ((duration + time.Millisecond/2) / time.Millisecond ) * time.Millisecond
+	duration =  zoutils.RoundDurationToMs(duration)
 	var czAgo = time.Duration(duration).String()
 
 	var str = fmt.Sprintf("%s (%s ago)",dateStr,czAgo)
@@ -122,7 +123,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		NowUTC:         time.Now(),
 		Header:         r.Header,
 		Restaurants:    restModels,
-		RenderTime:     time.Since(tic).String(),
+		RenderTime:     zoutils.RoundDurationToMs(time.Since(tic)).String(),
 		ServerSoftware: appengine.ServerSoftware(),
 	}
 

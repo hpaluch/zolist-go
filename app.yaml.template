@@ -13,7 +13,7 @@ handlers:
 skip_files:
 - ^(.*/)?#.*#$
 - ^(.*/)?.*~$
-- .*\.(md|sh)$
+- .*\.(md|sh|swp)$
 - ^\.gitignore$
 - ^\.git/.*
 - ^_scripts/.*
