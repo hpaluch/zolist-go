@@ -107,13 +107,13 @@ var reZoDate = regexp.MustCompile(`(\d{4})-(\d{2})-(\d{2}) (\d\d):(\d\d):(\d\d)`
 
 func (mii MenuItemItem) MenuCompactDate() string {
 	// if startTime is 00:00:00 and endTime is 23:59:59 return whole day
-	if strings.HasSuffix(mii.StartDate,"00:00:00") && strings.HasSuffix(mii.EndDate,"23:59:59") && len(mii.StartDate) >= 10 {
+	if strings.HasSuffix(mii.StartDate, "00:00:00") && strings.HasSuffix(mii.EndDate, "23:59:59") && len(mii.StartDate) >= 10 {
 		if reZoDate.MatchString(mii.StartDate) {
-			return reZoDate.ReplaceAllString(mii.StartDate,"$3.$2.$1")
+			return reZoDate.ReplaceAllString(mii.StartDate, "$3.$2.$1")
 		}
 		return mii.StartDate[:10]
 	}
-	return fmt.Sprintf("%s - %s",mii.StartDate, mii.EndDate)
+	return fmt.Sprintf("%s - %s", mii.StartDate, mii.EndDate)
 }
 
 type MenuItem struct {

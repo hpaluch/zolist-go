@@ -8,8 +8,8 @@ import (
 	"appengine"
 )
 
-func RoundDurationToMs( d time.Duration ) time.Duration {
-	return  ((d + time.Millisecond/2) / time.Millisecond ) * time.Millisecond
+func RoundDurationToMs(d time.Duration) time.Duration {
+	return ((d + time.Millisecond/2) / time.Millisecond) * time.Millisecond
 }
 
 // data model for templates/zz_layout.html
@@ -17,7 +17,7 @@ type LayoutModel struct {
 	NowUTC         time.Time
 	RenderTime     string
 	ServerSoftware string
-	Title		string
+	Title          string
 }
 
 func CreateLayoutModel(tic time.Time, title string) LayoutModel {
@@ -25,7 +25,7 @@ func CreateLayoutModel(tic time.Time, title string) LayoutModel {
 		NowUTC:         time.Now(),
 		RenderTime:     RoundDurationToMs(time.Since(tic)).String(),
 		ServerSoftware: appengine.ServerSoftware(),
-		Title:	title,
+		Title:          title,
 	}
 }
 
@@ -43,9 +43,9 @@ func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Reque
 	return true
 }
 
-func SearchIntArray( arr []int, key int ) bool {
+func SearchIntArray(arr []int, key int) bool {
 	for _, v := range arr {
-		if  v == key {
+		if v == key {
 			return true
 		}
 	}
