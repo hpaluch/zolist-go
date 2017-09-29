@@ -3,9 +3,11 @@ package zocache
 
 import (
 	"fmt"
+	"time"
 
 	"appengine"
 	"appengine/datastore"
+	"appengine/memcache"
 
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
 )
@@ -53,7 +55,41 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 	return entity2, nil
 }
 
+const menuMinTtlSecs = 3600 // one hour
+
 func FetchZomatoDailyMenu(ctx appengine.Context, api_key string, restId int) (*zoapi.Menu, error) {
-	// TODO: memcache implementation
-	return zoapi.FetchZomatoDailyMenu(ctx, api_key, restId)
+	var cacheKey = fmt.Sprintf("menu_by_rest_id:%d", restId)
+	var menuGet zoapi.Menu
+	var menuApi *zoapi.Menu
+
+	_, err := memcache.Gob.Get(ctx, cacheKey, &menuGet)
+	if err == nil {
+		return &menuGet, nil
+	}
+
+	if err != memcache.ErrCacheMiss {
+		ctx.Errorf("memcacheGet('%s'): %v", cacheKey, err)
+		return nil, err
+	}
+	// now we are sure there sis ErrCacheMiss...
+	menuApi, err = zoapi.FetchZomatoDailyMenu(ctx, api_key, restId)
+	if err != nil {
+		return nil, err
+	}
+
+	var item = memcache.Item{
+		Key:        cacheKey,
+		Object:     menuApi,
+		Expiration: time.Duration(menuMinTtlSecs * time.Second),
+	}
+	// use Info instead of warning - we have expiration - so it is common
+	ctx.Infof("Menu Cache MISS for restaurant_id=%d, duration=%v", restId, item.Expiration)
+
+	err = memcache.Gob.Set(ctx, &item)
+	if err != nil {
+		ctx.Errorf("Unable to memcache.Gob.Set('%s'): %v", cacheKey, err)
+		return nil, err
+	}
+
+	return menuApi, nil
 }
