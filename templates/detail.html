@@ -1,8 +1,9 @@
 {{template "header" .LayoutModel }}
+  <p><a href="/">Back to List</a></p>
   <h2><a href="{{ .Restaurant.Url  }}" target="zomato">{{ .Restaurant.Name }}</a></h2>
   <div class="menu">
   {{ range $i2,$v2 := .Menu.MenuItem }}
-   <h3 title="Menu status: {{ .Menu.Status }}">Menu:
+   <h3 title="Menu status: {{ $.Menu.Status }}">Menu:
              {{ $v2.MenuItemItem.Name }}
 	     ({{ len $v2.MenuItemItem.Dishes }} dishes)
 	     {{ $v2.MenuItemItem.MenuCompactDate }}</h3>

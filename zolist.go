@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io"
 	"net/http"
 	"os"
 	"regexp"
@@ -68,20 +67,16 @@ var (
 	rest_ids []int
 )
 
-type HomeRest struct {
+type DetailMenuModel struct {
+	LayoutModel    zoutils.LayoutModel
 	Restaurant *zoapi.Restaurant
 	Menu       *zoapi.Menu
-}
-
-type HomeModel struct {
-	LayoutModel    zoutils.LayoutModel
-	Restaurants    []HomeRest
 }
 
 var reDetailPath = regexp.MustCompile(`^/menu/(\d{1,12})$`)
 // menu detail for rest_id
 func handlerDetail(w http.ResponseWriter, r *http.Request){
-	// var tic = time.Now()
+	var tic = time.Now()
 	var ctx = appengine.NewContext(r)
 
 	if !zoutils.VerifyGetMethod(ctx,w,r) {
@@ -114,9 +109,40 @@ func handlerDetail(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	var tmp = fmt.Sprintf("TODO: %d",id)
-	io.WriteString(w,tmp)
+	restaurant, err := zocache.FetchZomatoRestaurant(ctx, zomato_api_key, id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	menu, err := zocache.FetchZomatoDailyMenu(ctx, zomato_api_key, id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var title = fmt.Sprintf("Detail of %s",restaurant.Name)
+	var model = DetailMenuModel{
+		LayoutModel:	zoutils.CreateLayoutModel(tic,title),
+		Restaurant:    restaurant,
+		Menu:		menu,
+	}
+
+	if err := tpl.ExecuteTemplate(w, "detail.html", model); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }
+
+type HomeRest struct {
+	Restaurant *zoapi.Restaurant
+	Menu       *zoapi.Menu
+}
+
+type HomeModel struct {
+	LayoutModel    zoutils.LayoutModel
+	Restaurants    []HomeRest
+}
+
 
 func handlerHome(w http.ResponseWriter, r *http.Request) {
 
