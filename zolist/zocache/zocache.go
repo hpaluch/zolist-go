@@ -62,6 +62,8 @@ func FetchZomatoDailyMenu(ctx appengine.Context, api_key string, restId int) (*z
 	var menuGet zoapi.Menu
 	var menuApi *zoapi.Menu
 
+	// NOTE: we use Gob (binary codec), because some fields
+	//       have not JSON mapping.
 	_, err := memcache.Gob.Get(ctx, cacheKey, &menuGet)
 	if err == nil {
 		return &menuGet, nil
