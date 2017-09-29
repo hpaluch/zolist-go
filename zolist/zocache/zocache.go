@@ -52,3 +52,8 @@ func FetchZomatoRestaurant(ctx appengine.Context, api_key string, restId int) (*
 	}
 	return entity2, nil
 }
+
+func FetchZomatoDailyMenu(ctx appengine.Context, api_key string, restId int) (*zoapi.Menu, error) {
+	// TODO: memcache implementation
+	return zoapi.FetchZomatoDailyMenu(ctx, api_key, restId)
+}

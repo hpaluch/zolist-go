@@ -86,7 +86,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		menu, err := zoapi.FetchZomatoDailyMenu(ctx, zomato_api_key, id)
+		menu, err := zocache.FetchZomatoDailyMenu(ctx, zomato_api_key, id)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
