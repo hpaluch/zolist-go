@@ -2,6 +2,7 @@
 package zoutils
 
 import (
+	"net/http"
 	"time"
 
 	"appengine"
@@ -26,4 +27,18 @@ func CreateLayoutModel(tic time.Time, title string) LayoutModel {
 		ServerSoftware: appengine.ServerSoftware(),
 		Title:	title,
 	}
+}
+
+func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Request) bool {
+
+	// how to trigger this error:
+	// curl -X POST -v http://localhost:8080
+	if r.Method != "GET" {
+		ctx.Errorf("Method '%s' not allowed for path '%s'",
+			r.Method, r.URL.Path)
+		http.Error(w, "Method not allowed",
+			http.StatusMethodNotAllowed)
+		return false
+	}
+	return true
 }

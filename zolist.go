@@ -4,8 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -76,7 +78,40 @@ type HomeModel struct {
 	Restaurants    []HomeRest
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+var reDetailPath = regexp.MustCompile(`^/menu/(\d{1,12})$`)
+// menu detail for rest_id
+func handlerDetail(w http.ResponseWriter, r *http.Request){
+	// var tic = time.Now()
+	var ctx = appengine.NewContext(r)
+
+	if !zoutils.VerifyGetMethod(ctx,w,r) {
+		return
+	}
+
+	if !reDetailPath.MatchString(r.URL.Path) {
+	        ctx.Errorf("Path '%s' does not match regexp",r.URL.Path)
+		http.NotFound(w, r)
+		return
+	}
+	var groups = reDetailPath.FindStringSubmatch(r.URL.Path)
+	if len(groups)!=2 {
+		ctx.Errorf("Got unexpected number of groups %d <> 2: %v",len(groups),groups)
+		http.Error(w, "regexp internal error", http.StatusInternalServerError)
+		return
+
+	}
+	var strRestId = groups[1]
+
+	id, err := strconv.Atoi(strRestId)
+	if err != nil {
+		ctx.Errorf("Unable to convert '%s' to int: %v",strRestId,err)
+		http.Error(w, "Can't parse ID to int", http.StatusInternalServerError)
+	}
+	var tmp = fmt.Sprintf("TODO: %d",id)
+	io.WriteString(w,tmp)
+}
+
+func handlerHome(w http.ResponseWriter, r *http.Request) {
 
 	// tic code got from https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
 	tic := time.Now()
@@ -88,13 +123,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// how to trigger this error:
-	// curl -X POST -v http://localhost:8080
-	if r.Method != "GET" {
-		ctx.Errorf("Method '%s' not allowed for path '%s'",
-			r.Method, r.URL.Path)
-		http.Error(w, "Method not allowed",
-			http.StatusMethodNotAllowed)
+	if !zoutils.VerifyGetMethod(ctx,w,r) {
 		return
 	}
 
@@ -151,5 +180,6 @@ func init() {
 		rest_ids[i] = id
 	}
 
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/menu/", handlerDetail)
+	http.HandleFunc("/", handlerHome)
 }
