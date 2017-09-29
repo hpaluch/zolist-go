@@ -107,6 +107,13 @@ func handlerDetail(w http.ResponseWriter, r *http.Request){
 		ctx.Errorf("Unable to convert '%s' to int: %v",strRestId,err)
 		http.Error(w, "Can't parse ID to int", http.StatusInternalServerError)
 	}
+
+	if !zoutils.SearchIntArray(rest_ids,id) {
+	        ctx.Errorf("id (%d) not found in list: %v",id,rest_ids)
+		http.NotFound(w, r)
+		return
+	}
+
 	var tmp = fmt.Sprintf("TODO: %d",id)
 	io.WriteString(w,tmp)
 }
