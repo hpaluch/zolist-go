@@ -15,6 +15,7 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > * defined 1st template function `ZoCzDateFormat` to format
 >   date in czech format and Europe/Prague timezone (called _location_ in Go)
 > * use [memcache](https://cloud.google.com/appengine/docs/standard/go/memcache/reference#Codec) for daily menu list
+> 
 > 2017-09-20 Reached
 > [milestone-2](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-2):
 > * Partial caching (Restaurant struct in datastore. It is simple
