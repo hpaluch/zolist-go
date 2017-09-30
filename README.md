@@ -190,6 +190,15 @@ And finally:
 ./deploy.sh
 ```
 
+# Mis tips
+
+How to view traces:
+
+* Go to Dashboard of your GAE project
+* click on "View Traces" on interested URL in list
+* than click on point in trace graph
+* you should now see detailed profile of your request
+
 
 # Resources
 
