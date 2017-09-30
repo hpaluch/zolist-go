@@ -8,6 +8,12 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > WARNING! It is work in progress! But ... see live demo
 > on https://hp-zolist.appspot.com/ :-)
 >
+> 2017-09-30 Reached
+> [milestone-4](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-4):
+> * master-detail (click on restaurant heading to get detail)
+> * ripped few [YUI2](http://yui.github.io/yui2/) styles to
+>   spice page design a bit
+>
 > 2017-09-29 Reached
 > [milestone-3](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-3):
 > * You can now use `REST_IDS` variable to pass custom public
@@ -198,7 +204,7 @@ I used many resources to write this program including
   https://cloud.google.com/appengine/docs/standard/go/config/appref
 * How to call JSON API:
   https://blog.alexellis.io/golang-json-api-client/
-* Hot to import your libraries:
+* How to import your libraries:
   https://cloud.google.com/appengine/docs/flexible/go/using-go-libraries
 * Offtopic: Dynamic eval of variables in bash:
   http://www.tldp.org/LDP/abs/html/ivr.html
@@ -217,7 +223,7 @@ I used many resources to write this program including
   https://stackoverflow.com/questions/18598480/execute-formatted-time-in-a-slice-with-html-template 
 * How to use custom template functions:
   http://technosophos.com/2013/11/23/using-custom-template-functions-in-go.html
-* How to use Codec with memcache:
+* How to use GOB Codec with memcache:
   https://gist.github.com/ImJasonH/e846785003b0509be05f
 * How to round time.Duration
   http://grokbase.com/t/gg/golang-nuts/1492epp0qb/go-nuts-how-to-round-a-duration
