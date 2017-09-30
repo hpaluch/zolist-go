@@ -131,9 +131,13 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var bc = zoutils.BreadCrumb{
+		Url: fmt.Sprintf("/menu/%d",id),
+		Description: "Menu Detail",
+	}
 	var title = fmt.Sprintf("Detail of %s", restaurant.Name)
 	var model = DetailMenuModel{
-		LayoutModel: zoutils.CreateLayoutModel(tic, title),
+		LayoutModel: zoutils.CreateLayoutModel(tic, title, &bc),
 		Restaurant:  restaurant,
 		Menu:        menu,
 		NextId:		next_id,
@@ -191,7 +195,7 @@ func handlerHome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	homeModel := HomeModel{
-		LayoutModel: zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu"),
+		LayoutModel: zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu",nil),
 		Restaurants: restModels,
 	}
 

@@ -74,6 +74,14 @@
 	    padding-top: .7em;
 	}
 
+	#ygunav p em a {
+		padding: 0 0.7em 0 0.7em;
+		border-right: 1px solid #000;
+        }
+	#ygunav p em a:last-child {
+		border: 0px;
+        }
+
 	#pagetitle {
 		background: url('/static/yui/bg_hd.gif') 0 0 repeat-x #B6CDE1;
 		border: 1px solid #93B2CC;
@@ -190,7 +198,11 @@
   <div id="hd">
 	<div id="ygunav">
 	<p>Now is: <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ ZoCzDateFormat .NowUTC }}</span>
-          <em><a href="/">ZoList</a></em>
+          <em>
+	   {{range .BreadCrumbs}}
+		<a href="{{ .Url }}">{{ .Description }}</a>
+	   {{end}}
+          </em>
         </p>
 	</div>
 	<div id="pagetitle">
