@@ -62,6 +62,13 @@ func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Reque
 	return true
 }
 
+func NoCacheHeaders(w http.ResponseWriter){
+	// look at headers of www.seznam.cz :-)
+	// WARNING! This also sets Cache-Control: no-cache
+	w.Header().Set("Pragma","no-cache")
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+}
+
 // returns -1 when not found
 func SearchIntArray(arr []int, key int) int {
 	for i, v := range arr {

@@ -79,6 +79,7 @@ var reDetailPath = regexp.MustCompile(`^/menu/(\d{1,12})$`)
 // menu detail for rest_id
 func handlerDetail(w http.ResponseWriter, r *http.Request) {
 	var tic = time.Now()
+	zoutils.NoCacheHeaders(w)
 	var ctx = appengine.NewContext(r)
 
 	if !zoutils.VerifyGetMethod(ctx, w, r) {
@@ -164,6 +165,7 @@ func handlerHome(w http.ResponseWriter, r *http.Request) {
 
 	// tic code got from https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
 	tic := time.Now()
+	zoutils.NoCacheHeaders(w)
 	var ctx = appengine.NewContext(r)
 	// report 404 for other path than "/"
 	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
