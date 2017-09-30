@@ -8,10 +8,14 @@
 	     ({{ len $v2.MenuItemItem.Dishes }} dishes)
 	     {{ $v2.MenuItemItem.MenuCompactDate }}</h3>
    <table>
-    <tr><th>Name</th><th>Price</th></tr>
+    <thead>
+     <tr><th>Name</th><th>Price</th></tr>
+    </thead>
+    <tbody>
     {{ range $i3,$v3 := $v2.MenuItemItem.Dishes }}
     <tr><td>{{ $v3.Dish.Name }}</td><td>{{ $v3.Dish.Price }}</td></tr>
     {{ end }}
+    </tbody>
    </table> 
   {{ end }}
   <p class="small">Updated on: {{ ZoCzDateFormatWithAgo $v.Menu.Changed }}</p>

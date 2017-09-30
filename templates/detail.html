@@ -1,5 +1,5 @@
 {{template "header" .LayoutModel }}
-  <p><a href="/">Back to List</a></p>
+  <p><a class="button" href="/">Back to List</a></p>
   <h2><a href="{{ .Restaurant.Url  }}" target="zomato">{{ .Restaurant.Name }}</a></h2>
   <div class="menu">
   {{ range $i2,$v2 := .Menu.MenuItem }}
@@ -8,15 +8,19 @@
 	     ({{ len $v2.MenuItemItem.Dishes }} dishes)
 	     {{ $v2.MenuItemItem.MenuCompactDate }}</h3>
    <table>
-    <tr><th>Name</th><th>Price</th></tr>
-    {{ range $i3,$v3 := $v2.MenuItemItem.Dishes }}
-    <tr><td>{{ $v3.Dish.Name }}</td><td>{{ $v3.Dish.Price }}</td></tr>
-    {{ end }}
+    <thead>
+     <tr><th>Name</th><th>Price</th></tr>
+    </thead>
+    <tbody>
+     {{ range $i3,$v3 := $v2.MenuItemItem.Dishes }}
+     <tr><td>{{ $v3.Dish.Name }}</td><td>{{ $v3.Dish.Price }}</td></tr>
+     {{ end }}
+    </tbody>
    </table> 
   {{ end }}
   <p>
-  {{with $.PrevId }}<a href="/menu/{{.}}">Prev. Menu</a>{{end}}
-  {{with $.NextId }}<a href="/menu/{{.}}">Next Menu</a>{{end}}
+  {{with $.PrevId }}<a class="button" href="/menu/{{.}}">Prev. Menu</a>{{end}}
+  {{with $.NextId }}<a class="button" href="/menu/{{.}}">Next Menu</a>{{end}}
   </p>
   <p class="small">Updated on: {{ ZoCzDateFormatWithAgo .Menu.Changed }}</p>
   </div>
