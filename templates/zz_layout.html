@@ -224,7 +224,7 @@
       title="Google Application Engine (GAE)" target="gae"><img src='/static/appengine-silver-120x30.gif' alt='GAE' ></a></span>
    </p>
    <div class="no-float"></div>
-   <p class="small">Render Time: {{ .RenderTime }},
+   <p class="small">{{ .P.Sprintf "Render Time" }}: {{ .RenderTime }},
 		    Server Software: {{ .ServerSoftware }}</p>
   </div>
  </body>

@@ -13,10 +13,6 @@ import (
 
 	"appengine"
 
-	"golang.org/x/text/language"
-	"golang.org/x/text/language/display"
-	"golang.org/x/text/message"
-
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
 	"github.com/hpaluch/zolist-go/zolist/zocache"
 	"github.com/hpaluch/zolist-go/zolist/zoconsts"
@@ -70,33 +66,7 @@ var (
 	rest_ids []int
 )
 
-var serverLangs = []language.Tag{
-    language.BritishEnglish, // en-GB fallback
-    language.Czech,          // de
-}
-var matcher = language.NewMatcher(serverLangs)
 
-func zoL10n(ctx appengine.Context, r *http.Request ){
-	var acceptLang = r.Header.Get("Accept-Language")
-	if acceptLang == "" {
-		acceptLang = "en-GB"
-	}
-	ctx.Infof("Accept-Language: %T %s",acceptLang,acceptLang)
-	var lang = language.Make(acceptLang)
-	tag, index, confidence := matcher.Match(lang)
-	ctx.Infof("best match: %s (%s) index=%d confidence=%v\n",
-		display.English.Tags().Name(tag),
-		display.Self.Name(tag),
-		index, confidence)
-	ctx.Infof("Messages: %v",message.DefaultCatalog.Languages())
-	message.SetString(language.BritishEnglish,"There are %d items","There are %d items (GB)")
-	message.SetString(language.Czech,"There are %d items","Je tam %d položek (CZ)")
-	for _,v := range serverLangs {
-		p := message.NewPrinter(v)
-		var lText = p.Sprintf("There are %d items",12345)
-		ctx.Infof(lText)
-	}
-}
 
 type DetailMenuModel struct {
 	LayoutModel zoutils.LayoutModel
@@ -170,7 +140,7 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 	}
 	var title = fmt.Sprintf("Detail of %s", restaurant.Name)
 	var model = DetailMenuModel{
-		LayoutModel: zoutils.CreateLayoutModel(tic, title, &bc),
+		LayoutModel: zoutils.CreateLayoutModel(tic, title, &bc,ctx,r),
 		Restaurant:  restaurant,
 		Menu:        menu,
 		NextId:		next_id,
@@ -199,7 +169,6 @@ func handlerHome(w http.ResponseWriter, r *http.Request) {
 	tic := time.Now()
 	zoutils.NoCacheHeaders(w)
 	var ctx = appengine.NewContext(r)
-	zoL10n(ctx,r)
 	// report 404 for other path than "/"
 	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
 	if r.URL.Path != "/" {
@@ -230,7 +199,7 @@ func handlerHome(w http.ResponseWriter, r *http.Request) {
 	}
 
 	homeModel := HomeModel{
-		LayoutModel: zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu",nil),
+		LayoutModel: zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu",nil,ctx,r),
 		Restaurants: restModels,
 	}
 

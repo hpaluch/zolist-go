@@ -6,6 +6,10 @@ import (
 	"time"
 
 	"appengine"
+
+	"golang.org/x/text/message"
+
+	"github.com/hpaluch/zolist-go/zolist/zol10n"
 )
 
 func RoundDurationToMs(d time.Duration) time.Duration {
@@ -24,9 +28,10 @@ type LayoutModel struct {
 	ServerSoftware string
 	Title          string
 	BreadCrumbs	[]BreadCrumb
+	P	       *message.Printer
 }
 
-func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb) LayoutModel {
+func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.Context, r *http.Request ) LayoutModel {
 
 	var breadCrumbs = make([]BreadCrumb,1)
 	breadCrumbs[0] = BreadCrumb{
@@ -38,6 +43,7 @@ func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb) LayoutModel {
 		breadCrumbs = append(breadCrumbs,*bc)
 	}
 
+	var locPrinter = zol10n.ZoL10n(ctx,r)
 
 	return LayoutModel{
 		NowUTC:         time.Now(),
@@ -45,6 +51,7 @@ func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb) LayoutModel {
 		ServerSoftware: appengine.ServerSoftware(),
 		Title:          title,
 		BreadCrumbs:	breadCrumbs,
+		P:		locPrinter,
 	}
 }
 
