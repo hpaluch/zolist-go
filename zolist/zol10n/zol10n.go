@@ -2,11 +2,11 @@ package zol10n;
 
 import (
 	"net/http"
+	"regexp"
 
 	"appengine"
 
 	"golang.org/x/text/language"
-	"golang.org/x/text/language/display"
 	"golang.org/x/text/message"
 )
 
@@ -14,7 +14,8 @@ var serverLangs = []language.Tag{
     language.BritishEnglish, // en-GB fallback
     language.Czech,          // de
 }
-var matcher = language.NewMatcher(serverLangs)
+
+var reAcceptCzLang = regexp.MustCompile(`(cs|cz|sk)`)
 
 func ZoL10n(ctx appengine.Context, r *http.Request ) *message.Printer {
 	var acceptLang = r.Header.Get("Accept-Language")
@@ -22,12 +23,12 @@ func ZoL10n(ctx appengine.Context, r *http.Request ) *message.Printer {
 		acceptLang = "en-GB"
 	}
 	ctx.Infof("Accept-Language: %T %s",acceptLang,acceptLang)
-	var lang = language.Make(acceptLang)
-	tag, index, confidence := matcher.Match(lang)
-	ctx.Infof("best match: %s (%s) index=%d confidence=%v\n",
-		display.English.Tags().Name(tag),
-		display.Self.Name(tag),
-		index, confidence)
+	var tag = language.BritishEnglish
+
+	if reAcceptCzLang.MatchString(acceptLang) {
+		tag = language.Czech
+	}
+
 	ctx.Infof("Messages: %v",message.DefaultCatalog.Languages())
 	p := message.NewPrinter(tag)
 	var lText = p.Sprintf("There are %d items",12345)
