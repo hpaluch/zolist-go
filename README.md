@@ -72,6 +72,10 @@ git clone https://github.com/hpaluch/zolist-go.git
 > Please see discussion
 > at https://cloud.google.com/appengine/docs/flexible/go/using-go-libraries
 
+Get additional localisation packages using:
+```bash
+_scripts/goget.sh
+```
 
 To Get Zomato API key:
 * go to page https://developers.zomato.com/api

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export GOROOT=/opt/gae/google-cloud-sdk/platform/google_appengine/goroot-1.6
+exec $GOROOT/bin/goapp $*
+
