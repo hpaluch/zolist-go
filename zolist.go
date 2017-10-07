@@ -67,14 +67,12 @@ var (
 	rest_ids []int
 )
 
-
-
 type DetailMenuModel struct {
 	LayoutModel zoutils.LayoutModel
 	Restaurant  *zoapi.Restaurant
 	Menu        *zoapi.Menu
-	NextId		*int
-	PrevId		*int
+	NextId      *int
+	PrevId      *int
 }
 
 var reDetailPath = regexp.MustCompile(`^/[a-z]{2}/menu/(\d{1,12})$`)
@@ -89,7 +87,7 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// necessary to verify relaxed lang url prefix
-	var langIndex,err = zol10n.LangFromUrlBase(ctx,r)
+	var langIndex, err = zol10n.LangFromUrlBase(ctx, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -143,12 +141,12 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 
 	var urlBase = zol10n.LangUrlBase(langIndex)
 	var bc = zoutils.BreadCrumb{
-		Url: fmt.Sprintf("%s/menu/%d",urlBase,id),
+		Url:         fmt.Sprintf("%s/menu/%d", urlBase, id),
 		Description: "Menu Detail",
 	}
 	var title = fmt.Sprintf("Detail of %s", restaurant.Name)
 
-	layoutModel,err := zoutils.CreateLayoutModel(tic, title, &bc,ctx,r)
+	layoutModel, err := zoutils.CreateLayoutModel(tic, title, &bc, ctx, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -158,8 +156,8 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		LayoutModel: layoutModel,
 		Restaurant:  restaurant,
 		Menu:        menu,
-		NextId:		next_id,
-		PrevId:		prev_id,
+		NextId:      next_id,
+		PrevId:      prev_id,
 	}
 
 	if err := tpl.ExecuteTemplate(w, "detail.html", model); err != nil {
@@ -182,19 +180,19 @@ func handlerList(w http.ResponseWriter, r *http.Request) {
 	// tic code got from https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
 	var tic = time.Now()
 	var ctx = appengine.NewContext(r)
-	var langIndex,err = zol10n.LangFromUrlBase(ctx,r)
+	var langIndex, err = zol10n.LangFromUrlBase(ctx, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	var urlBase = zol10n.LangUrlBase(langIndex)
-	var myPath = urlBase+"/";
+	var myPath = urlBase + "/"
 
 	zoutils.NoCacheHeaders(w)
 	// report 404 for other path than "/"
 	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
 	if r.URL.Path != myPath {
-		ctx.Errorf("Unexpected path '%s' <> '%s'",r.URL.Path,myPath)
+		ctx.Errorf("Unexpected path '%s' <> '%s'", r.URL.Path, myPath)
 		http.NotFound(w, r)
 		return
 	}
@@ -221,7 +219,7 @@ func handlerList(w http.ResponseWriter, r *http.Request) {
 		restModels[i].Menu = menu
 	}
 
-	layoutModel,err := zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu",nil,ctx,r)
+	layoutModel, err := zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu", nil, ctx, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -236,7 +234,6 @@ func handlerList(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 // reirect to /xx/ URL where xx is one of supported langs
 func handlerHome(w http.ResponseWriter, r *http.Request) {
 
@@ -250,10 +247,10 @@ func handlerHome(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var langIndex = zol10n.LangFromHeader(ctx,r)
+	var langIndex = zol10n.LangFromHeader(ctx, r)
 
-	var urlBase = fmt.Sprintf("/%s/",zol10n.UrlLangs[langIndex])
-	http.Redirect(w,r,urlBase,http.StatusFound)
+	var urlBase = fmt.Sprintf("/%s/", zol10n.UrlLangs[langIndex])
+	http.Redirect(w, r, urlBase, http.StatusFound)
 }
 
 // main handler fo Go/GAE application
@@ -281,8 +278,8 @@ func init() {
 		rest_ids[i] = id
 	}
 
-	for _,lang := range zol10n.UrlLangs {
-		var urlBase = fmt.Sprintf("/%s",lang)
+	for _, lang := range zol10n.UrlLangs {
+		var urlBase = fmt.Sprintf("/%s", lang)
 		http.HandleFunc(urlBase+"/menu/", handlerDetail)
 		http.HandleFunc(urlBase+"/", handlerList)
 	}

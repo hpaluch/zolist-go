@@ -17,14 +17,14 @@ func RoundDurationToMs(d time.Duration) time.Duration {
 }
 
 type BreadCrumb struct {
-	Url	string
+	Url         string
 	Description string
 }
 
 type LangSwitch struct {
 	LangCode string
 	LangName string
-	Url	 string
+	Url      string
 }
 
 // data model for templates/zz_layout.html
@@ -33,43 +33,43 @@ type LayoutModel struct {
 	RenderTime     string
 	ServerSoftware string
 	Title          string
-	BreadCrumbs	[]BreadCrumb
-	P	       *message.Printer
-	HtmlLangCode    string
-	UrlBase		string
-	LangSwitches	[]LangSwitch
+	BreadCrumbs    []BreadCrumb
+	P              *message.Printer
+	HtmlLangCode   string
+	UrlBase        string
+	LangSwitches   []LangSwitch
 }
 
-func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.Context, r *http.Request ) (LayoutModel,error) {
+func CreateLayoutModel(tic time.Time, title string, bc *BreadCrumb, ctx appengine.Context, r *http.Request) (LayoutModel, error) {
 
-	var langIndex,locPrinter,err = zol10n.LocFromUrlBase(ctx,r)
+	var langIndex, locPrinter, err = zol10n.LocFromUrlBase(ctx, r)
 	if err != nil {
-		return LayoutModel{},err
+		return LayoutModel{}, err
 	}
 
-	var urlBase = zol10n.LangUrlBase( langIndex )
+	var urlBase = zol10n.LangUrlBase(langIndex)
 
-	var breadCrumbs = make([]BreadCrumb,1)
+	var breadCrumbs = make([]BreadCrumb, 1)
 	breadCrumbs[0] = BreadCrumb{
-		Url: urlBase+"/",
+		Url:         urlBase + "/",
 		Description: "ZoList",
 	}
 
 	if bc != nil {
-		breadCrumbs = append(breadCrumbs,*bc)
+		breadCrumbs = append(breadCrumbs, *bc)
 	}
 
-	var langSwitches = make([]LangSwitch,0)
-	for i,lang := range zol10n.UrlLangs {
+	var langSwitches = make([]LangSwitch, 0)
+	for i, lang := range zol10n.UrlLangs {
 		if i != langIndex {
-			var langUrlBase = zol10n.LangUrlBase( i )
-			var url = langUrlBase+r.URL.Path[3:]
+			var langUrlBase = zol10n.LangUrlBase(i)
+			var url = langUrlBase + r.URL.Path[3:]
 			var langSw = LangSwitch{
 				LangCode: lang,
-				LangName: zol10n.LangNames[ i ],
-				Url:	url,
+				LangName: zol10n.LangNames[i],
+				Url:      url,
 			}
-			langSwitches = append( langSwitches, langSw )
+			langSwitches = append(langSwitches, langSw)
 		}
 	}
 
@@ -78,12 +78,12 @@ func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.
 		RenderTime:     RoundDurationToMs(time.Since(tic)).String(),
 		ServerSoftware: appengine.ServerSoftware(),
 		Title:          title,
-		BreadCrumbs:	breadCrumbs,
-		P:		locPrinter,
-		HtmlLangCode:	zol10n.HtmlLangs[ langIndex ],
-		UrlBase:	urlBase,
-		LangSwitches:	langSwitches,
-	},nil
+		BreadCrumbs:    breadCrumbs,
+		P:              locPrinter,
+		HtmlLangCode:   zol10n.HtmlLangs[langIndex],
+		UrlBase:        urlBase,
+		LangSwitches:   langSwitches,
+	}, nil
 }
 
 func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Request) bool {
@@ -100,10 +100,10 @@ func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Reque
 	return true
 }
 
-func NoCacheHeaders(w http.ResponseWriter){
+func NoCacheHeaders(w http.ResponseWriter) {
 	// look at headers of www.seznam.cz :-)
 	// WARNING! This also sets Cache-Control: no-cache
-	w.Header().Set("Pragma","no-cache")
+	w.Header().Set("Pragma", "no-cache")
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 }
 
