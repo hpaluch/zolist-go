@@ -89,7 +89,7 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// necessary to verify relaxed lang url prefix
-	var _,err = zol10n.LangFromUrlBase(ctx,r)
+	var langIndex,err = zol10n.LangFromUrlBase(ctx,r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -141,8 +141,9 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var urlBase = zol10n.LangUrlBase(langIndex)
 	var bc = zoutils.BreadCrumb{
-		Url: fmt.Sprintf("/menu/%d",id),
+		Url: fmt.Sprintf("%s/menu/%d",urlBase,id),
 		Description: "Menu Detail",
 	}
 	var title = fmt.Sprintf("Detail of %s", restaurant.Name)
