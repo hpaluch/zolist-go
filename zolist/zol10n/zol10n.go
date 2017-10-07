@@ -72,6 +72,11 @@ func LangFromUrlBase(ctx appengine.Context, r *http.Request) (int, error) {
 	return -1, errors.New(fmt.Sprintf("Language '%s' not found", lang))
 }
 
+func LocFromIndex(langIndex int) *message.Printer {
+	var tag = serverLangs[langIndex]
+	return message.NewPrinter(tag)
+}
+
 func LocFromUrlBase(ctx appengine.Context, r *http.Request) (int, *message.Printer, error) {
 
 	var langIndex, err = LangFromUrlBase(ctx, r)
@@ -81,13 +86,11 @@ func LocFromUrlBase(ctx appengine.Context, r *http.Request) (int, *message.Print
 
 	var tag = serverLangs[langIndex]
 
-	ctx.Infof("Messages: %v", message.DefaultCatalog.Languages())
+	//ctx.Infof("Messages: %v", message.DefaultCatalog.Languages())
 	p := message.NewPrinter(tag)
 	var lText = p.Sprintf("There are %d items", 12345)
 	ctx.Infof(lText)
 	// WARNING: p.Sprint() does not work(?!)
-	var text2 = p.Sprintf("Render Time")
-	ctx.Infof(text2)
 	return langIndex, p, nil
 }
 
@@ -143,4 +146,11 @@ func init() {
 	message.SetString(language.BritishEnglish, BACK_TO_L, BACK_TO_L)
 	message.SetString(language.Czech, BACK_TO_L, "Zpět na seznam")
 
+	const DETAIL_OF = "Detail of %s"
+	message.SetString(language.BritishEnglish, DETAIL_OF, DETAIL_OF)
+	message.SetString(language.Czech, DETAIL_OF, "Detail nabídky z %s")
+
+	const LIST_TITLE = "Favorite Restaurants menu"
+	message.SetString(language.BritishEnglish, LIST_TITLE, LIST_TITLE)
+	message.SetString(language.Czech, LIST_TITLE, "Nabídka oblíbených restaurací")
 }

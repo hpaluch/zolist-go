@@ -144,7 +144,9 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		Url:         fmt.Sprintf("%s/menu/%d", urlBase, id),
 		Description: "Menu Detail",
 	}
-	var title = fmt.Sprintf("Detail of %s", restaurant.Name)
+
+	var loc = zol10n.LocFromIndex(langIndex)
+	var title = loc.Sprintf("Detail of %s", restaurant.Name)
 
 	layoutModel, err := zoutils.CreateLayoutModel(tic, title, &bc, ctx, r)
 	if err != nil {
@@ -219,7 +221,8 @@ func handlerList(w http.ResponseWriter, r *http.Request) {
 		restModels[i].Menu = menu
 	}
 
-	layoutModel, err := zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu", nil, ctx, r)
+	var loc = zol10n.LocFromIndex(langIndex)
+	layoutModel, err := zoutils.CreateLayoutModel(tic, loc.Sprintf("Favorite Restaurants menu"), nil, ctx, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
