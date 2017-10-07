@@ -200,13 +200,13 @@
  <body>
   <div id="hd">
 	<div id="ygunav">
-	<p>Now is: <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ ZoCzDateFormat .NowUTC }}</span>
+	<p>{{ .P.Sprintf "Now is" }}: <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ ZoCzDateFormat .NowUTC }}</span>
 	 {{range .LangSwitches }}
 	 <a href="{{ .Url }}" title="{{ .LangName }}" class="with-img"><img src="/static/lang/{{ .LangCode }}.png" alt="{{ .LangName }}" ></a>
 	 {{end}}
           <em>
 	   {{range .BreadCrumbs}}
-		<a href="{{ .Url }}">{{ .Description }}</a>
+		<a href="{{ .Url }}">{{ $.P.Sprintf .Description }}</a>
 	   {{end}}
           </em>
         </p>
@@ -222,8 +222,8 @@
   </div><!-- /bd -->
   <hr noshade size="1">
   <div id="footer">
-   <p>See <a href="https://github.com/hpaluch/zolist-go"
-           class="button button-primary" target="github">Source on GitHub!</a>
+   <p>{{ .P.Sprintf "See"}} <a href="https://github.com/hpaluch/zolist-go"
+           class="button button-primary" target="github">{{ .P.Sprintf "Source on GitHub" }}!</a>
    <span>Powered by <a href="https://golang.org/"
                  title="Go language" target="go"><img src="/static/golang.png" alt="Go language" ></a>
    <a href="https://cloud.google.com/appengine/docs/"

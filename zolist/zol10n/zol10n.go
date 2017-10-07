@@ -93,9 +93,55 @@ func LocFromUrlBase(ctx appengine.Context, r *http.Request ) (int,*message.Print
 }
 
 func init() {
-	message.SetString(language.BritishEnglish,"There are %d items","There are %d items (GB)")
-	message.SetString(language.Czech,"There are %d items","Je tam %d položek (CZ)")
+	message.SetString(language.BritishEnglish,"There are %d items","There are %d items")
+	message.SetString(language.Czech,"There are %d items","Je tam %d položek")
 
-	message.SetString(language.BritishEnglish,"Render Time","Render Time (GB)")
-	message.SetString(language.Czech,"Render Time","Doba generování stránky (CZ)")
-}
+	message.SetString(language.BritishEnglish,"Render Time","Render Time")
+	message.SetString(language.Czech,"Render Time","Doba generování stránky")
+
+	message.SetString(language.BritishEnglish,"ZoList","ZoList")
+	message.SetString(language.Czech,"ZoList","ZoSeznam")
+
+	message.SetString(language.BritishEnglish,"Now is","Now is")
+	message.SetString(language.Czech,"Now is","Aktualizováno")
+
+	message.SetString(language.BritishEnglish,"See","See")
+	message.SetString(language.Czech,"See","Podívejte se na")
+
+	const SRC_GIT_HUB = "Source on GitHub"
+	message.SetString(language.BritishEnglish,SRC_GIT_HUB,SRC_GIT_HUB)
+	message.SetString(language.Czech,SRC_GIT_HUB,"Zdrojáky na GitHubu")
+
+	const MEAL = "Meal";
+	message.SetString(language.BritishEnglish,MEAL,MEAL)
+	message.SetString(language.Czech,MEAL,"Jídlo")
+
+	const PRICE = "Price";
+	message.SetString(language.BritishEnglish,PRICE,PRICE)
+	message.SetString(language.Czech,PRICE,"Cena")
+
+	const UPDATED = "Updated on";
+	message.SetString(language.BritishEnglish,UPDATED,UPDATED)
+	message.SetString(language.Czech,UPDATED,"Aktualizováno")
+
+	const REST = "Restaurant %s";
+	message.SetString(language.BritishEnglish,REST,"Restaurant ‘%s’")
+	message.SetString(language.Czech,REST,"Restaurace „%s“")
+
+	const MENU_DETAIL = "Menu Detail"
+	message.SetString(language.BritishEnglish,MENU_DETAIL,MENU_DETAIL)
+	message.SetString(language.Czech,MENU_DETAIL,"Detail nabídky")
+
+	const MENU_PREV = "Prev. Menu"
+	message.SetString(language.BritishEnglish,MENU_PREV,MENU_PREV)
+	message.SetString(language.Czech,MENU_PREV,"Předchozí nabídka")
+
+	const MENU_NEXT = "Next Menu"
+	message.SetString(language.BritishEnglish,MENU_NEXT,MENU_NEXT)
+	message.SetString(language.Czech,MENU_NEXT,"Další nabídka")
+
+	const BACK_TO_L = "Back to List"
+	message.SetString(language.BritishEnglish,BACK_TO_L,BACK_TO_L)
+	message.SetString(language.Czech,BACK_TO_L,"Zpět na seznam")
+
+ }

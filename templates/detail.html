@@ -1,5 +1,5 @@
 {{template "header" .LayoutModel }}
-  <p><a class="button" href="{{ $.LayoutModel.UrlBase }}/">Back to List</a></p>
+  <p><a class="button" href="{{ $.LayoutModel.UrlBase }}/">{{ .LayoutModel.P.Sprintf "Back to List" }}</a></p>
   <h2><a href="{{ .Restaurant.Url  }}" target="zomato">{{ .Restaurant.Name }}</a></h2>
   <div class="menu">
   {{ range $i2,$v2 := .Menu.MenuItem }}
@@ -9,7 +9,7 @@
 	     {{ $v2.MenuItemItem.MenuCompactDate }}</h3>
    <table>
     <thead>
-     <tr><th>Name</th><th>Price</th></tr>
+     <tr><th>{{ $.LayoutModel.P.Sprintf "Meal" }}</th><th>{{ $.LayoutModel.P.Sprintf "Price" }}</th></tr>
     </thead>
     <tbody>
      {{ range $i3,$v3 := $v2.MenuItemItem.Dishes }}
@@ -19,10 +19,10 @@
    </table> 
   {{ end }}
   <p>
-  {{with $.PrevId }}<a class="button" href="{{ $.LayoutModel.UrlBase }}/menu/{{.}}">Prev. Menu</a>{{end}}
-  {{with $.NextId }}<a class="button" href="{{ $.LayoutModel.UrlBase }}/menu/{{.}}">Next Menu</a>{{end}}
+  {{with $.PrevId }}<a class="button" href="{{ $.LayoutModel.UrlBase }}/menu/{{.}}">{{ $.LayoutModel.P.Sprintf "Prev. Menu" }}</a>{{end}}
+  {{with $.NextId }}<a class="button" href="{{ $.LayoutModel.UrlBase }}/menu/{{.}}">{{ $.LayoutModel.P.Sprintf "Next Menu" }}</a>{{end}}
   </p>
-  <p class="small">Updated on: {{ ZoCzDateFormatWithAgo .Menu.Changed }}</p>
+  <p class="small">{{ $.LayoutModel.P.Sprintf "Updated on" }}: {{ ZoCzDateFormatWithAgo .Menu.Changed }}</p>
   </div>
 
 {{template "footer" .LayoutModel }}
