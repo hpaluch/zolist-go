@@ -8,6 +8,13 @@ Goal is to list favorite menus using Zomato REST API as data source.
 > WARNING! It is work in progress! But ... see live demo
 > on https://hp-zolist.appspot.com/ :-)
 >
+> 2017-10-07 Reached
+> [milestone-5](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-5):
+> * now available in two languages (British English, Czech) - uses
+>   specific path prefix for language to ease bookmarks and avoid
+>   robots confusion
+> * localized most of page content
+>
 > 2017-09-30 Reached
 > [milestone-4](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-4):
 > * master-detail (click on restaurant heading to get detail)
