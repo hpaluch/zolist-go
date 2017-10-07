@@ -21,6 +21,12 @@ type BreadCrumb struct {
 	Description string
 }
 
+type LangSwitch struct {
+	LangCode string
+	LangName string
+	Url	 string
+}
+
 // data model for templates/zz_layout.html
 type LayoutModel struct {
 	NowUTC         time.Time
@@ -31,6 +37,7 @@ type LayoutModel struct {
 	P	       *message.Printer
 	HtmlLangCode    string
 	UrlBase		string
+	LangSwitches	[]LangSwitch
 }
 
 func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.Context, r *http.Request ) (LayoutModel,error) {
@@ -52,6 +59,20 @@ func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.
 		breadCrumbs = append(breadCrumbs,*bc)
 	}
 
+	var langSwitches = make([]LangSwitch,0)
+	for i,lang := range zol10n.UrlLangs {
+		if i != langIndex {
+			var langUrlBase = zol10n.LangUrlBase( i )
+			var url = langUrlBase+r.URL.Path[3:]
+			var langSw = LangSwitch{
+				LangCode: lang,
+				LangName: zol10n.LangNames[ i ],
+				Url:	url,
+			}
+			langSwitches = append( langSwitches, langSw )
+		}
+	}
+
 	return LayoutModel{
 		NowUTC:         time.Now(),
 		RenderTime:     RoundDurationToMs(time.Since(tic)).String(),
@@ -61,6 +82,7 @@ func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.
 		P:		locPrinter,
 		HtmlLangCode:	zol10n.HtmlLangs[ langIndex ],
 		UrlBase:	urlBase,
+		LangSwitches:	langSwitches,
 	},nil
 }
 

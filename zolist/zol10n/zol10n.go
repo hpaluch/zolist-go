@@ -19,6 +19,10 @@ var HtmlLangs = []string{
 	"en",
 	"cs",
 }
+var LangNames = []string{
+	"English",
+	"Česky",
+}
 var UrlLangs = []string{
 	"en",
 	"cz",

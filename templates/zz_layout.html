@@ -169,6 +169,9 @@
 	div.menu { margin-left: 1em; }
 	a, a:visited { color: #000 }
 	a:hover { color: #fff; background: #000 }
+	a.with-img { text-decoration: none; }
+	a:hover.with-img { color: #000; background: none; }
+	a img { vertical-align: middle; }
 
 	/* these button styles come from Skeleton,
            see http://getskeleton.com/ */
@@ -198,6 +201,9 @@
   <div id="hd">
 	<div id="ygunav">
 	<p>Now is: <span title="{{ .NowUTC.Format "02.01.2006 15:04:05 MST"}}">{{ ZoCzDateFormat .NowUTC }}</span>
+	 {{range .LangSwitches }}
+	 <a href="{{ .Url }}" title="{{ .LangName }}" class="with-img"><img src="/static/lang/{{ .LangCode }}.png" alt="{{ .LangName }}" ></a>
+	 {{end}}
           <em>
 	   {{range .BreadCrumbs}}
 		<a href="{{ .Url }}">{{ .Description }}</a>
