@@ -16,6 +16,7 @@ import (
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
 	"github.com/hpaluch/zolist-go/zolist/zocache"
 	"github.com/hpaluch/zolist-go/zolist/zoconsts"
+	"github.com/hpaluch/zolist-go/zolist/zol10n"
 	"github.com/hpaluch/zolist-go/zolist/zoutils"
 )
 
@@ -139,8 +140,15 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 		Description: "Menu Detail",
 	}
 	var title = fmt.Sprintf("Detail of %s", restaurant.Name)
+
+	layoutModel,err := zoutils.CreateLayoutModel(tic, title, &bc,ctx,r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	var model = DetailMenuModel{
-		LayoutModel: zoutils.CreateLayoutModel(tic, title, &bc,ctx,r),
+		LayoutModel: layoutModel,
 		Restaurant:  restaurant,
 		Menu:        menu,
 		NextId:		next_id,
@@ -163,15 +171,23 @@ type HomeModel struct {
 	Restaurants []HomeRest
 }
 
-func handlerHome(w http.ResponseWriter, r *http.Request) {
-
+func handlerList(w http.ResponseWriter, r *http.Request) {
 	// tic code got from https://github.com/golang/appengine/blob/master/demos/guestbook/guestbook.go
-	tic := time.Now()
-	zoutils.NoCacheHeaders(w)
+	var tic = time.Now()
 	var ctx = appengine.NewContext(r)
+	var langIndex,err = zol10n.LangFromUrlBase(ctx,r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	var urlBase = zol10n.LangUrlBase(langIndex)
+	var myPath = urlBase+"/";
+
+	zoutils.NoCacheHeaders(w)
 	// report 404 for other path than "/"
 	// see https://github.com/GoogleCloudPlatform/golang-samples/blob/master/appengine_flexible/helloworld/helloworld.go
-	if r.URL.Path != "/" {
+	if r.URL.Path != myPath {
+		ctx.Errorf("Unexpected path '%s' <> '%s'",r.URL.Path,myPath)
 		http.NotFound(w, r)
 		return
 	}
@@ -198,14 +214,39 @@ func handlerHome(w http.ResponseWriter, r *http.Request) {
 		restModels[i].Menu = menu
 	}
 
+	layoutModel,err := zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu",nil,ctx,r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	homeModel := HomeModel{
-		LayoutModel: zoutils.CreateLayoutModel(tic, "Favorite Restaurants menu",nil,ctx,r),
+		LayoutModel: layoutModel,
 		Restaurants: restModels,
 	}
 
 	if err := tpl.ExecuteTemplate(w, "home.html", homeModel); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+
+// reirect to /xx/ URL where xx is one of supported langs
+func handlerHome(w http.ResponseWriter, r *http.Request) {
+
+	zoutils.NoCacheHeaders(w)
+	var ctx = appengine.NewContext(r)
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+	if !zoutils.VerifyGetMethod(ctx, w, r) {
+		return
+	}
+
+	var langIndex = zol10n.LangFromHeader(ctx,r)
+
+	var urlBase = fmt.Sprintf("/%s/",zol10n.UrlLangs[langIndex])
+	http.Redirect(w,r,urlBase,http.StatusFound)
 }
 
 // main handler fo Go/GAE application
@@ -233,6 +274,11 @@ func init() {
 		rest_ids[i] = id
 	}
 
-	http.HandleFunc("/menu/", handlerDetail)
+	for _,lang := range zol10n.UrlLangs {
+		var urlBase = fmt.Sprintf("/%s",lang)
+		http.HandleFunc(urlBase+"/menu/", handlerDetail)
+		http.HandleFunc(urlBase+"/", handlerList)
+	}
+
 	http.HandleFunc("/", handlerHome)
 }

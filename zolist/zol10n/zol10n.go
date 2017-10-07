@@ -1,6 +1,8 @@
 package zol10n;
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"regexp"
 
@@ -10,24 +12,71 @@ import (
 	"golang.org/x/text/message"
 )
 
+const LangEnIndex = 0
+const LangCzIndex = 1
+
+var HtmlLangs = []string{
+	"en",
+	"cs",
+}
+var UrlLangs = []string{
+	"en",
+	"cz",
+}
+
+func LangUrlBase(langIndex int) string {
+	return fmt.Sprintf("/%s",UrlLangs[ langIndex ])
+}
+
 var serverLangs = []language.Tag{
     language.BritishEnglish, // en-GB fallback
     language.Czech,          // de
 }
 
+var reUrlBaseLang = regexp.MustCompile(`^/(cz|en)/`)
+
+// Here are all Accept-Language values that should match Czech
 var reAcceptCzLang = regexp.MustCompile(`(cs|cz|sk)`)
 
-func ZoL10n(ctx appengine.Context, r *http.Request ) *message.Printer {
+func LangFromHeader(ctx appengine.Context, r *http.Request ) int {
 	var acceptLang = r.Header.Get("Accept-Language")
 	if acceptLang == "" {
 		acceptLang = "en-GB"
 	}
 	ctx.Infof("Accept-Language: %T %s",acceptLang,acceptLang)
-	var tag = language.BritishEnglish
+	var langIndex = LangEnIndex 
 
 	if reAcceptCzLang.MatchString(acceptLang) {
-		tag = language.Czech
+		langIndex = LangCzIndex
 	}
+	return langIndex
+}
+
+func LangFromUrlBase(ctx appengine.Context, r *http.Request) (int,error) {
+	var groups = reUrlBaseLang.FindStringSubmatch(r.URL.Path)
+	if len(groups) != 2 {
+		ctx.Errorf("Got unexpected number of groups %d <> 2: %v for path '%s'", len(groups), groups,r.URL.Path)
+		return -1,errors.New("Invalid path prefix")
+	}
+	var lang = groups[1]
+	for i := range UrlLangs {
+		if UrlLangs[i] == lang {
+			return i,nil
+		}
+	}
+	ctx.Errorf("Language '%s' not found",lang)
+	return -1,errors.New(fmt.Sprintf("Language '%s' not found",lang))
+}
+
+
+func LocFromUrlBase(ctx appengine.Context, r *http.Request ) (int,*message.Printer,error) {
+
+	var langIndex,err = LangFromUrlBase(ctx,r)
+	if err != nil {
+		return -1,nil,err
+	}
+
+	var tag = serverLangs[ langIndex ]
 
 	ctx.Infof("Messages: %v",message.DefaultCatalog.Languages())
 	p := message.NewPrinter(tag)
@@ -36,7 +85,7 @@ func ZoL10n(ctx appengine.Context, r *http.Request ) *message.Printer {
 	// WARNING: p.Sprint() does not work(?!)
 	var text2 = p.Sprintf("Render Time")
 	ctx.Infof(text2)
-	return p
+	return langIndex,p,nil
 }
 
 func init() {

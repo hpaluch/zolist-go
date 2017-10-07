@@ -1,6 +1,6 @@
 {{template "header" .LayoutModel }}
 {{ range $i, $v := .Restaurants }}
-  <h2><a href="/menu/{{ $v.Restaurant.Id  }}">{{ $v.Restaurant.Name }}</a></h2>
+  <h2><a href="{{ $.LayoutModel.UrlBase }}/menu/{{ $v.Restaurant.Id  }}">{{ $v.Restaurant.Name }}</a></h2>
   <div class="menu">
   {{ range $i2,$v2 := $v.Menu.MenuItem }}
    <h3 title="Menu status: {{ $v.Menu.Status }}">Menu:

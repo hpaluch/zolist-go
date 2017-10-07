@@ -29,21 +29,28 @@ type LayoutModel struct {
 	Title          string
 	BreadCrumbs	[]BreadCrumb
 	P	       *message.Printer
+	HtmlLangCode    string
+	UrlBase		string
 }
 
-func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.Context, r *http.Request ) LayoutModel {
+func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.Context, r *http.Request ) (LayoutModel,error) {
+
+	var langIndex,locPrinter,err = zol10n.LocFromUrlBase(ctx,r)
+	if err != nil {
+		return LayoutModel{},err
+	}
+
+	var urlBase = zol10n.LangUrlBase( langIndex )
 
 	var breadCrumbs = make([]BreadCrumb,1)
 	breadCrumbs[0] = BreadCrumb{
-		Url: "/",
-		Description: "ZoList",	
+		Url: urlBase+"/",
+		Description: "ZoList",
 	}
 
 	if bc != nil {
 		breadCrumbs = append(breadCrumbs,*bc)
 	}
-
-	var locPrinter = zol10n.ZoL10n(ctx,r)
 
 	return LayoutModel{
 		NowUTC:         time.Now(),
@@ -52,7 +59,9 @@ func CreateLayoutModel(tic time.Time, title string,bc *BreadCrumb,ctx appengine.
 		Title:          title,
 		BreadCrumbs:	breadCrumbs,
 		P:		locPrinter,
-	}
+		HtmlLangCode:	zol10n.HtmlLangs[ langIndex ],
+		UrlBase:	urlBase,
+	},nil
 }
 
 func VerifyGetMethod(ctx appengine.Context, w http.ResponseWriter, r *http.Request) bool {
