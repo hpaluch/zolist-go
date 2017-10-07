@@ -77,7 +77,7 @@ type DetailMenuModel struct {
 	PrevId		*int
 }
 
-var reDetailPath = regexp.MustCompile(`^/menu/(\d{1,12})$`)
+var reDetailPath = regexp.MustCompile(`^/[a-z]{2}/menu/(\d{1,12})$`)
 
 // menu detail for rest_id
 func handlerDetail(w http.ResponseWriter, r *http.Request) {
@@ -86,6 +86,12 @@ func handlerDetail(w http.ResponseWriter, r *http.Request) {
 	var ctx = appengine.NewContext(r)
 
 	if !zoutils.VerifyGetMethod(ctx, w, r) {
+		return
+	}
+	// necessary to verify relaxed lang url prefix
+	var _,err = zol10n.LangFromUrlBase(ctx,r)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
