@@ -25,7 +25,7 @@ func tplCzDateStr(timeArg time.Time) string {
 	return timeArg.In(zoconsts.CzechLocation).Format("02.01.2006 15:04:05 MST")
 }
 
-func tplCzDateStrWithAgo( P *message.Printer, timeArg time.Time) string {
+func tplCzDateStrWithAgo(P *message.Printer, timeArg time.Time) string {
 	var dateStr = tplCzDateStr(timeArg)
 	// compute ago
 	var czNow = time.Now().In(zoconsts.CzechLocation)
