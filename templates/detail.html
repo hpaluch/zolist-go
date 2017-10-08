@@ -22,7 +22,7 @@
   {{with $.PrevId }}<a class="button" href="{{ $.LayoutModel.UrlBase }}/menu/{{.}}">{{ $.LayoutModel.P.Sprintf "Prev. Menu" }}</a>{{end}}
   {{with $.NextId }}<a class="button" href="{{ $.LayoutModel.UrlBase }}/menu/{{.}}">{{ $.LayoutModel.P.Sprintf "Next Menu" }}</a>{{end}}
   </p>
-  <p class="small">{{ $.LayoutModel.P.Sprintf "Updated on" }}: {{ ZoCzDateFormatWithAgo .Menu.Changed }}</p>
+  <p class="small">{{ $.LayoutModel.P.Sprintf "Updated on" }}: {{ ZoCzDateFormatWithAgo $.LayoutModel.P .Menu.Changed }}</p>
   </div>
 
 {{template "footer" .LayoutModel }}

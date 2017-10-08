@@ -148,9 +148,12 @@ func init() {
 
 	const DETAIL_OF = "Detail of %s"
 	message.SetString(language.BritishEnglish, DETAIL_OF, DETAIL_OF)
-	message.SetString(language.Czech, DETAIL_OF, "Detail nabídky z %s")
+	message.SetString(language.Czech, DETAIL_OF, "Detail nabídky %s")
 
 	const LIST_TITLE = "Favorite Restaurants menu"
 	message.SetString(language.BritishEnglish, LIST_TITLE, LIST_TITLE)
 	message.SetString(language.Czech, LIST_TITLE, "Nabídka oblíbených restaurací")
+	const DATE_W_AGO = "%s (%s ago)"
+	message.SetString(language.BritishEnglish, DATE_W_AGO, DATE_W_AGO)
+	message.SetString(language.Czech, DATE_W_AGO, "%s (před %s)")
 }

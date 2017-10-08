@@ -10,6 +10,8 @@ import (
 	"strings"
 	"time"
 
+	"golang.org/x/text/message"
+
 	"appengine"
 
 	"github.com/hpaluch/zolist-go/zolist/zoapi"
@@ -23,7 +25,7 @@ func tplCzDateStr(timeArg time.Time) string {
 	return timeArg.In(zoconsts.CzechLocation).Format("02.01.2006 15:04:05 MST")
 }
 
-func tplCzDateStrWithAgo(timeArg time.Time) string {
+func tplCzDateStrWithAgo( P *message.Printer, timeArg time.Time) string {
 	var dateStr = tplCzDateStr(timeArg)
 	// compute ago
 	var czNow = time.Now().In(zoconsts.CzechLocation)
@@ -33,7 +35,7 @@ func tplCzDateStrWithAgo(timeArg time.Time) string {
 	duration = zoutils.RoundDurationToMs(duration)
 	var czAgo = time.Duration(duration).String()
 
-	var str = fmt.Sprintf("%s (%s ago)", dateStr, czAgo)
+	var str = P.Sprintf("%s (%s ago)", dateStr, czAgo)
 	return str
 }
 

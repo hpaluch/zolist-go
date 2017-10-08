@@ -18,7 +18,7 @@
     </tbody>
    </table> 
   {{ end }}
-  <p class="small">{{ $.LayoutModel.P.Sprintf "Updated on" }}: {{ ZoCzDateFormatWithAgo $v.Menu.Changed }}</p>
+  <p class="small">{{ $.LayoutModel.P.Sprintf "Updated on" }}: {{ ZoCzDateFormatWithAgo $.LayoutModel.P $v.Menu.Changed }}</p>
   </div>
 {{ end }}
 
