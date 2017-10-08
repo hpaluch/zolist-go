@@ -1,7 +1,6 @@
 package zolist
 
 import (
-	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -20,36 +19,22 @@ import (
 	"github.com/hpaluch/zolist-go/zolist/zoutils"
 )
 
-func tplCzDateStr(timeArg interface{}) (string, error) {
-	// Type Assertion - please see:
-	//    https://stackoverflow.com/questions/14289256/cannot-convert-data-type-interface-to-type-string-need-type-assertion
-	t, ok := timeArg.(time.Time)
-	if !ok {
-		var errMsg = fmt.Sprintf("Unsupported argument type: %T, expecting time.Time", timeArg)
-		return "", errors.New(errMsg)
-	}
-
-	return t.In(zoconsts.CzechLocation).Format("02.01.2006 15:04:05 MST"), nil
+func tplCzDateStr(timeArg time.Time) string {
+	return timeArg.In(zoconsts.CzechLocation).Format("02.01.2006 15:04:05 MST")
 }
 
-func tplCzDateStrWithAgo(timeArg interface{}) (string, error) {
-	var dateStr, err = tplCzDateStr(timeArg)
-	if err != nil {
-		return "", err
-	}
-	// timeArg was verified by tplCzDateStr
-	t, _ := timeArg.(time.Time)
-
+func tplCzDateStrWithAgo(timeArg time.Time) string {
+	var dateStr = tplCzDateStr(timeArg)
 	// compute ago
 	var czNow = time.Now().In(zoconsts.CzechLocation)
-	var duration = czNow.Sub(t)
+	var duration = czNow.Sub(timeArg)
 	// round to millisecond
 	// see: http://grokbase.com/t/gg/golang-nuts/1492epp0qb/go-nuts-how-to-round-a-duration
 	duration = zoutils.RoundDurationToMs(duration)
 	var czAgo = time.Duration(duration).String()
 
 	var str = fmt.Sprintf("%s (%s ago)", dateStr, czAgo)
-	return str, nil
+	return str
 }
 
 var (
