@@ -5,7 +5,8 @@
   {{ range $i2,$v2 := .Menu.MenuItem }}
    <h3 title="Menu status: {{ $.Menu.Status }}">Menu:
              {{ $v2.MenuItemItem.Name }}
-	     ({{ len $v2.MenuItemItem.Dishes }} dishes)
+	     {{ $dishes := len $v2.MenuItemItem.Dishes }}
+	     ({{ $.LayoutModel.P.Sprintf "%d dish(es)" $dishes }})
 	     {{ $v2.MenuItemItem.MenuCompactDate }}</h3>
    <table>
     <thead>

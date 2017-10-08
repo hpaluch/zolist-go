@@ -156,4 +156,8 @@ func init() {
 	const DATE_W_AGO = "%s (%s ago)"
 	message.SetString(language.BritishEnglish, DATE_W_AGO, DATE_W_AGO)
 	message.SetString(language.Czech, DATE_W_AGO, "%s (před %s)")
+
+	const DISHES = "%d dish(es)"
+	message.SetString(language.BritishEnglish, DISHES, DISHES)
+	message.SetString(language.Czech, DISHES, "%d porce/í")
 }
