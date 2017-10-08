@@ -3,10 +3,9 @@
 
 GAE Application (written in Go)
 
-Goal is to list favorite menus using Zomato REST API as data source.
+Goal is to list favourite menus using Zomato REST API as data source.
 
-> WARNING! It is work in progress! But ... see live demo
-> on https://hp-zolist.appspot.com/ :-)
+> See live demo on https://hp-zolist.appspot.com/ :-)
 >
 > 2017-10-07 Reached
 > [milestone-5](https://github.com/hpaluch/zolist-go/releases/tag/zolist-milestone-5):

@@ -209,7 +209,7 @@ func handlerList(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var loc = zol10n.LocFromIndex(langIndex)
-	layoutModel, err := zoutils.CreateLayoutModel(tic, loc.Sprintf("Favorite Restaurants menu"), nil, ctx, r)
+	layoutModel, err := zoutils.CreateLayoutModel(tic, loc.Sprintf("Favourite Restaurants menu"), nil, ctx, r)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

@@ -150,7 +150,7 @@ func init() {
 	message.SetString(language.BritishEnglish, DETAIL_OF, DETAIL_OF)
 	message.SetString(language.Czech, DETAIL_OF, "Detail nabídky %s")
 
-	const LIST_TITLE = "Favorite Restaurants menu"
+	const LIST_TITLE = "Favourite Restaurants menu"
 	message.SetString(language.BritishEnglish, LIST_TITLE, LIST_TITLE)
 	message.SetString(language.Czech, LIST_TITLE, "Nabídka oblíbených restaurací")
 	const DATE_W_AGO = "%s (%s ago)"
