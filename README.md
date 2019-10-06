@@ -1,5 +1,14 @@
 # ZoList - Zomato menu list
 
+> IMPORTANT!
+>
+> Since October 1 2019 this Go runtime (1.9) is no longer supported.
+> Also to succesfully deploy Go runtime 1.11 (least supported version)
+> you _must enable Billing_ (even when you plan to use free quotas only).
+>
+> Therefore I have no plan to upgrade this project to higher Go runtimes.
+> Sorry.
+
 
 GAE Application (written in Go)
 
